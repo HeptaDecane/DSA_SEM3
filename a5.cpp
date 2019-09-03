@@ -34,15 +34,29 @@ public:
 	void insertLast();
 	void displayRow(int);
 	int occupy(int,string);
+	int unoccupy(int,string);
 	void display(List []);
 	void create(List []);
 	void menu();
 	void book(List []);
 	void cancel(List []);
+	int seats(List []);
 };
 List::List(){
 	start=NULL;
 	last=NULL;
+}
+int List::seats(List row[10]){
+	int count=0;
+	for(int i=0;i<10;i++){
+		Node *t=row[i].start;
+		for(int j=0;j<7;j++){
+			if(!t->status)
+				count++;
+			t=t->next;
+		}
+	}
+	return count;
 }
 void List::create(List row[10]){
 	for(int i=0;i<10;i++)
@@ -62,6 +76,7 @@ void List::display(List row[10]){
 		row[i].displayRow(number);
 		number+=7;
 	}
+	cout<<"# Available Seat(s): "<<seats(row);
 }
 void List::createRow(){
 	for(int i=0;i<7;i++)
@@ -114,8 +129,24 @@ int List::occupy(int col,string _name){
 	t->name=_name;
 	return 1;
 }
+int List::unoccupy(int col,string _name){
+	Node *t;
+	t=start;
+	for(int i=0;i<col;i++){
+		t=t->next;
+	}
+	if(t->status){
+		if(t->name==_name){
+			t->status=0;
+			t->name="NILL";
+			return 1;
+		}
+		return -1;		
+	}
+	return 0;
+}
 void List::menu(){
-	cout<<"------------------CHECK YOUR SHOW--------------------"<<endl;
+	cout<<"\n\n------------------CHECK YOUR SHOW--------------------"<<endl;
 	cout<<"\tPress 1 : Display Seats"<<endl;
 	cout<<"\tPress 2 : Book Ticket(s)"<<endl;
 	cout<<"\tPress 3 : Cancel Ticket(s)"<<endl;
@@ -141,7 +172,28 @@ void List::book(List row[10]){
 	display(row);
 }
 void List::cancel(List row[10]){
-	cout<<"Under Maintainence ";
+	int n,seatNo,r,c;
+	string name;
+	cout<<"Number of Tickets: ";cin>>n;
+	for(int i=0;i<n;i++){
+		cout<<"Enter "<<i+1<<".Seat Number: ";cin>>seatNo;
+		cout<<"Enter Name of Person "<<i+1<<": ";cin>>name;
+		r=(seatNo-1)/7;
+		c=(seatNo-1)%7;
+		if(row[r].unoccupy(c,name)==0){
+			cout<<"Seat No. "<<seatNo<<" is Already Un-Occupied\n";
+			cout<<"Check your Seat No. and Try again!\n";
+			return;
+		}
+		else if(row[r].unoccupy(c,name)==-1){
+			cout<<"\nEntered Name Didn't Match as per Ticket";
+			cout<<"\nTry again!";
+			return;
+		}
+	}
+	display(row);
+	cout<<"\nCancellation Successful! Verify Theatre Status";
+	return;
 }
 int main() {
 	List row[10],theatre;
