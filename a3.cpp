@@ -84,7 +84,6 @@ void Polynomial::arrange(){
 		}
 	}
 	n-=count;
-
 }
 void Polynomial::display(){
 	int i;
@@ -215,5 +214,3 @@ int main()
 	}
 	return 0;
 }
-
-
