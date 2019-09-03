@@ -76,7 +76,8 @@ void List::display(List row[10]){
 		row[i].displayRow(number);
 		number+=7;
 	}
-	cout<<"# Available Seat(s): "<<seats(row);
+	cout<<"\n\nScreen: [#############################################################################################]";
+	cout<<"\n\t#Available Seat(s): "<<seats(row);
 }
 void List::createRow(){
 	for(int i=0;i<7;i++)
