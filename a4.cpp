@@ -367,7 +367,7 @@ int main() {
 					l->reverseDisplay();
 					break;
 			deafult:
-				 cout<<"Wrong choice";
+				 cout<<"Wrong choice"; 
 		}
 	}while(choice!=0);
 cout<<"\nEND...\n";
