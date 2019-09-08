@@ -1,231 +1,376 @@
-//============================================================================
-// Name        : Assignment.cpp
-// Author      : near
-// Version     :
-// Copyright   : Your copyright notice
-// Description : Hello World in C++, Ansi-style
-//============================================================================
-
-#include <bits/stdc++.h>
+#include <iostream>
+#include<string>
 using namespace std;
-class Student{
-private:
+class Node
+{
 	int prn;
-	string name,division;
-	Student*  next;
+	string name;
+	Node *next;
 public:
-	Student();
-	Student(int,string,string);
-	void setData(int,string,string);
-	void display();
-	friend class Club;
+	Node(int x,string nm)
+{
+		prn=x;
+		next=NULL;
+		name=nm;
+}
+
+friend class List;
 };
-Student::Student(int _prn,string _name,string _division){
-	prn=_prn;
-	name=_name;
-	division=_division;
-	next=NULL;
-}
-void Student::display(){
-	cout<<name<<" "<<prn<<" "<<division<<endl;
-}
-class Club{
-private:
-	Student* start;
+class List
+{
+	Node *start;
 public:
-	Club();
-	Club(int);
-	void read(int);
+	List(){
+		start=NULL;
+	}
+	void create();
 	void display();
+	void insertAtBeginning();
+	void insertAtEnd();
+	void insertAfter();
+	void deleteAtFirst();
+	void deleteByValue();
+	void deleteAtEnd();
+	int computeTotal();
+	void sortList();
+	void concatList(List &q1);
+	void displayRev(Node *t);
 	void menu();
-	void addPresident(int,string,string);
-	void addSecretary(int,string,string);
-	void addMember(int,string,string);
-	void deletePresident();
-	void deleteMember(int);
-	void deleteSecretary();
-	int searchMember(int);
+	bool reverseDisplay() //function is only for passing start as argument to recursive function
+         {
+        	 if(start==NULL)
+        		return false;
+        	 Node *temp=start;
+        	 displayRev(temp);
+        	 //cout<<"(President)";
+        	 return true;
+         }
 };
-Club::Club(){
-	start=NULL;
+void List::menu(){
+		cout<<"\n1. create\n2.Insert President\n3.Insert secretary\n4.insert after position(member)\n5.Display List"
+		<<"\n6.Delete President\n7.Delete Secretary\n8.Delete Member\n9.Find total No. of members\n10.Sort List\n11. Reselect List "
+		<<"\n12.Combine lists\n13.Reverse Display\n0. Exit";
 }
-void Club::read(int n){
-	int prn;
-	string name,division;
-	cout<<"Details: ";
-	cin>>prn>>name>>division;
-	start=new Student(prn,name,division);
-	Student* t=start;
-	for(int i=1;i<n;i++){
-		cin>>prn>>name>>division;
-		Student* current=new Student(prn,name,division);
-		t->next=current;
-		t=current;
+void List::displayRev(Node *t)
+{
+	if(t==NULL)
+		return;
+	else
+	{
+		displayRev(t->next);
+		cout<<"\nPRN NO:"<<t->prn<<" Name: "<<t->name;
 	}
 }
-void Club::display(){
-	Student *t=start;
-	while(t!=NULL){
-		t->display();
+void List::create()
+{
+	int no;
+	string nam;
+	if(start==NULL)
+	{
+		cout<<"Enter PRN number: ";
+		cin>>no;
+		cout<<"Enter name: ";
+		cin>>nam;
+		cout<<nam;
+		start=new Node(no,nam);
+		cout<<"\n====== List Created =====";
+		
+	}
+	else
+	{
+		cout<<"\nList is already created.";
+	}
+}
+void List::display()
+{
+	Node *t;
+	t=start;
+	if(start==NULL)
+		cout<<"\nList is Empty";
+	else
+	{ cout<<"\n====== List: ======\n";
+		while(t!=NULL){
+			cout<<t->prn<<"  "<<t->name<<" \n";
+					t=t->next;
+		}
+		//cout<<t->prn<<"  "<<t->name<<" \n";
+	}
+}
+void List::insertAtBeginning()
+{
+	int no;
+	string nam;
+ Node *temp;
+ if(start==NULL)
+ {
+	 create();
+ }
+ else
+ {
+	 cout<<"\nEnter PRN number: ";
+	 cin>>no;
+	 cout<<"Enter name: ";
+	 cin>>nam;
+	 //cout<<nam;
+	 temp=new Node(no,nam);
+	 temp->next=start;
+	 start=temp;;
+	 cout<<"Inserted  "<<temp->name<<" at the beginning.";
+ }
+}
+void List::insertAtEnd()
+{
+	int no;
+	string nam;
+	Node *t;
+	if(start==NULL)
+		create();
+	else
+	{
+	 cout<<"\nEnter PRN number: ";
+	 cin>>no;
+	 cout<<"Enter name: ";
+	 cin>>nam;
+	 t=start;
+	 while(t->next!=NULL)
+	 	t=t->next;
+	 	
+	 	Node*p=new Node(no,nam);
+	 	t->next=p;
+	}
+}
+void List::insertAfter()
+{
+	int prev_no;
+	cout<<"\nENter PRN No. after do you want insert:";
+	cin>>prev_no;
+	Node *t;
+	t=start;
+	string nam;
+	int flag=0,no;
+	while(t!=NULL)
+	{
+		if(t->prn==prev_no)
+		{
+			flag=1;break;
+		}
 		t=t->next;
 	}
+	if(flag==1)
+	{
+		Node *p;
+		cout<<"\nEnter PRN number: ";
+	 cin>>no;
+	 cout<<"Enter name: ";
+	 cin>>nam;
+	 p=new Node(no,nam);
+	 p->next=t->next;
+	 t->next=p;
+	}
+	else
+	{
+		cout<<"\n"<<prev_no<<" is not in List.";
+	}
+	
 }
-void Club::addPresident(int prn,string name,string division){
-	Student* temp=new Student(prn,name,division);
-	if(start==NULL){
-		start=temp;
-	}
-	else{
-		temp->next=start;
-		start=temp;
-	}
+
+void List::deleteAtFirst()
+{
+	Node *t;
+	if(start==NULL)
+		cout<<"\nClub is Empty..";
+	else
+	{
+	t=start;
+	start=start->next;
+	t->next=NULL; //Not necessary
+	delete t;
+	cout<<"\nPresident deleted..";
 }
-void Club::addSecretary(int prn,string name,string division){
-	Student* t=start;
-	Student* temp=new Student(prn,name,division);
-	if(start==NULL){
-		cout<<"No President Found";
-	}
-	else{
+}
+
+void List::deleteByValue()
+{
+	int no,flag=0;
+	Node *t,*prev;
+	if(start==NULL)
+		cout<<"\nList/Club is empty;";
+	else
+	{
+		cout<<"\nEnter PRN no. of member to be deleted: ";
+		cin>>no;
+		t=start->next; //t=start if we have to delete precident also.. start->next is first member
 		while(t->next!=NULL)
+		{
+			if(t->prn==no){
+				flag=1;
+				break;
+			}
+			prev=t;
 			t=t->next;
-		t->next=temp;
-		temp->next=NULL;
+		}
+		if(flag==1)
+		{
+			prev->next=t->next;
+			t->next=NULL;
+			delete t;
+			cout<<"\nMember with prn no: "<<no<<" is deleted.";
+		}
+		else
+			cout<<"\nMember not found in List./president or secretary cannot be deleted.";
 	}
 }
-void Club::addMember(int prn,string name,string division){
-	Student* current=new Student(prn,name,division);
-	if(start==NULL||start->next==NULL){
-		cout<<"No President Found";
-	}
-	else{
-		current->next=start->next;
-		start->next=current;
-	}
-}
-void Club::deleteMember(int pos){
-	Student *t=start;
-	Student *temp=NULL;
-	for(int i=0;i<pos;i++){
+void List::deleteAtEnd()
+{
+	Node *t,*prev;
+	t=start;
+		if(start==NULL)
+		cout<<"\nClub is Empty..";
+	else
+	{
+	while(t->next!=NULL)
+	{
+		prev=t;
 		t=t->next;
 	}
-	temp=t->next;
-	t->next=(t->next)->next;
-	temp->next=NULL;
-	delete temp;
-	cout<<"Member Deleted";
+	prev->next=NULL;
+	delete t;
+	cout<<"\nSecretary Deleted.";
 }
-int Club::searchMember(int prn){
-	Student *t=start->next;
-	int i=0;
-	if(start==NULL){
-		cout<<"List empty";
-		return -1;	
-	}
-	else{
-		while(t->next!=NULL){
-			if(t->prn==prn){
-				return i;
-			}
-			t=t->next;
-			i++;
-		}
-		cout<<"Member Not Found";
-		return -1;
-	}
 }
-void Club::deletePresident(){
-	Student *temp=NULL;
-	if(start==NULL){
-		cout<<"No President Found";
-	}
-	else{
-		temp=start;
-		start=start->next;
-		temp->next=NULL;
-		delete temp;
-		cout<<"President Deleted!";
-	}
-}
-void Club::deleteSecretary(){
-	Student *t=start->next;
-	Student *temp=NULL;
-	if(start==NULL){
-		cout<<"No President Found";	
-	}
-	else{
-		while((t->next)->next!=NULL){
-			t=t->next;
-		}
-		temp=t->next;
-		t->next=NULL;
-		delete temp;
-	}
-}
-void Club::menu(){
-	cout<<"------------------POLYNOMIAL--------------------"<<endl;
-	cout<<"\tPress 1 : Display List"<<endl;
-	cout<<"\tPress 2 : Add President"<<endl;
-	cout<<"\tPress 3 : Add Secretary"<<endl;
-	cout<<"\tPress 4 : Add Member"<<endl;
-	cout<<"\tPress 5 : Delete Member"<<endl;
-	cout<<"\tPress 6 : Delete President"<<endl;
-	cout<<"\tPress 7 : Delete Secretary"<<endl;
-	cout<<"\tPress 0 to exit"<<endl;
-}
-int main(){
-	int ch=1,n,prn,pos;
-	string name,division;
-	Club pinnacle;
-	pinnacle.menu();
-	cout<<endl<<"_______________________________________________";
-	cout<<endl<<"Enter Choice from Menu [Press 0 to exit]: ";
-	cin>>ch;
-	while(ch!=0){
-		switch(ch){
-			case 1:
-				pinnacle.display();
-				break;
-			case 2:
-				cout<<"Enter Prn Number: ";cin>>prn;
-				cout<<"Enter Name: ";cin>>name;
-				cout<<"Enter Division: ";cin>>division;
-				pinnacle.addPresident(prn,name,division);
-				break;
-			case 3:
-				cout<<"Enter Prn Number: ";cin>>prn;
-				cout<<"Enter Name: ";cin>>name;
-				cout<<"Enter Division: ";cin>>division;
-				pinnacle.addSecretary(prn,name,division);
-				break;
-			case 4:
-				cout<<"Enter Prn Number: ";cin>>prn;
-				cout<<"Enter Name: ";cin>>name;
-				cout<<"Enter Division: ";cin>>division;
-				pinnacle.addMember(prn,name,division);
-				break;
-			case 5:
-				cout<<"Enter Prn of the Member: ";cin>>prn;
-				pos=pinnacle.searchMember(prn);
-				if(pos>0)
-				{
-					pinnacle.deleteMember(pos);
-				}
-				break;
-			case 6:
-				pinnacle.deletePresident();
-				break;
-			case 7:
-				pinnacle.deleteSecretary();
-				break;
-			default:
-				cout<<"Invalid choice "<<ch;
-		}
-		cout<<endl<<"_______________________________________________";
-		cout<<endl<<"Enter Choice from Menu [Press 0 to exit]: ";
-		cin>>ch;
-	}
+int List::computeTotal()
+{
+Node *t;
+int count=0;
+t=start;
+if(start==NULL)
+{
+	cout<<"\nList is empty.";
 	return 0;
 }
+while(t!=NULL)
+{
+count++;
+t=t->next;
+}
 
+return count;
+}
 
+void List::sortList()
+{
+	Node *i,*j,*last=NULL;
+	int tprn;
+	string tname;
+
+if(start==NULL)
+{
+	cout<<"\nList is empty.";
+	return ;
+}
+for(i=start;i->next!=NULL;i=i->next)
+{
+	for(j=start;j->next!=last;j=j->next)
+	{
+		if((j->prn)>(j->next->prn))
+		{
+			tprn=j->prn;
+			tname=j->name;
+			j->prn=j->next->prn;
+			j->name=j->next->name;
+
+			j->next->prn=tprn;
+			j->next->name=tname;
+
+		}
+	}
+}
+cout<<"\n List is sorted.";
+display();
+}
+void List::concatList(List &q1)
+{
+	Node *t,*p;
+	t=q1.start;
+	if(t==NULL)
+	{
+		cout<<"\nList 2 is empty";
+		return;
+	}
+	p=start; //first List
+	while(p->next!=NULL)
+	{
+		p=p->next;
+	}
+	p->next=t;
+	q1.start=NULL; //second List is set to  null
+	cout<<"\nAfter concatenationlist";
+	display();
+	
+}
+int main() {
+	List *l;
+	int choice,selectList;
+	List l1,l2;
+	l=&l1;
+	X:cout<<"\nSelect List\n1.List 1\n2.List 2\nEnter choice: ";
+	cin>>selectList;
+
+	if(selectList==1)
+	{
+		l=&l1;
+	}
+	else if(selectList==2)
+	{
+		l=&l2;
+	}
+	else
+	{
+		cout<<"\nWrong List Number.";
+		goto X;
+	}
+	l1.menu();
+	do
+	{
+		cout<<"\nEnter Your Choice: ";
+		cin>>choice;
+
+		switch(choice)
+		{
+			case 1: l->create();
+				break;
+			case 2:	l->insertAtBeginning();
+				break;
+			case 3: l->insertAtEnd();
+				break;
+			case 4: l->insertAfter();
+				break;
+			case 5: l->display();
+				break;
+			case 6: l->deleteAtFirst();
+				break;
+			case 7: l->deleteAtEnd();
+				break;
+			case 8: l->deleteByValue();
+				break;
+			case 9:	cout<<"\nTotal members(including President & Secretary): "<<l->computeTotal();
+				break;
+			case 10: l->sortList();
+			break;
+			case 11:
+				goto X;
+				break;
+				case 12:
+					l1.concatList(l2);
+					break;
+				case 13:
+					l->reverseDisplay();
+					break;
+			deafult:
+				 cout<<"Wrong choice";
+		}
+	}while(choice!=0);
+cout<<"\nEND...\n";
+	
+	return 0;
+}
