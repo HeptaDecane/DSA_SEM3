@@ -52,7 +52,7 @@ List List::_minus(List a){
 	}
 	return only;
 }
-void List::sort(){
+void List::sort(){https://www.ssyoutube.com/watch?v=ZxiETzt9icM
 	int temp;
 	for(Node* p=start;p!=NULL;p=p->next){
 		for(Node* q=p->next;q!=NULL;q=q->next){

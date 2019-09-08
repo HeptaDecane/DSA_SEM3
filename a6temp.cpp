@@ -1,273 +1,225 @@
-include<iostream>
+///*
+// * C++ Program To Implement Stack using Linked List
+// */
+//#include<iostream>
+//#include<cstdlib>
+//using namespace std;
+// 
+///*
+// * Node Declaration
+// */
+//struct node
+//{
+//    int info;
+//    struct node *link;    
+//}*top;
+// 
+///*
+// * Class Declaration
+// */
+//class stack_list
+//{
+//    public:
+//        node *push(node *, int);
+//        node *pop(node *);
+//        void traverse(node *);
+//        stack_list()
+//        {
+//            top = NULL;
+//        }               
+//};
+// 
+///*
+// * Main: Contains Menu
+// */
+//int main()
+//{
+//    int choice, item;
+//    stack_list sl;
+//    while (1)
+//    {
+//        cout<<"\n-------------"<<endl;
+//        cout<<"Operations on Stack"<<endl;
+//        cout<<"\n-------------"<<endl;
+//        cout<<"1.Push Element into the Stack"<<endl;
+//        cout<<"2.Pop Element from the Stack"<<endl;
+//        cout<<"3.Traverse the Stack"<<endl;
+//        cout<<"4.Quit"<<endl;
+//        cout<<"Enter your Choice: ";
+//        cin>>choice;
+//        switch(choice)
+//        {
+//        case 1:
+//            cout<<"Enter value to be pushed into the stack: ";
+//            cin>>item;
+//            top = sl.push(top, item);
+//            break;
+//        case 2:
+//            top = sl.pop(top);
+//            break;
+//        case 3:
+//            sl.traverse(top);
+//            break;
+//        case 4:
+//            exit(1);
+//            break;
+//        default:
+//            cout<<"Wrong Choice"<<endl;
+//        }
+//    }
+//    return 0;
+//}
+// 
+///*
+// * Push Element into the Stack
+// */
+//node *stack_list::push(node *top, int item)
+//{
+//    node *tmp;
+//    tmp = new (struct node);
+//    tmp->info = item;
+//    tmp->link = top;
+//    top = tmp;
+//    return top;
+//}
+// 
+///*
+// * Pop Element from the Stack
+// */
+//node *stack_list::pop(node *top)
+//{
+//    node *tmp;
+//    if (top == NULL)
+//        cout<<"Stack is Empty"<<endl;
+//    else
+//    {       
+//        tmp = top;
+//        cout<<"Element Popped: "<<tmp->info<<endl;
+//        top = top->link;
+//        delete(tmp);
+//    }
+//    return top;
+//}
+// 
+///*
+// * Traversing the Stack
+// */
+//void stack_list::traverse(node *top)
+//{       
+//    node *ptr;
+//    ptr = top;
+//    if (top == NULL)
+//        cout<<"Stack is empty"<<endl;
+//    else
+//    {
+//        cout<<"Stack elements :"<<endl;
+//        while (ptr != NULL)
+//        {
+//            cout<<ptr->info<<endl;
+//            ptr = ptr->link;
+//        }
+//    }
+
+
+
+
+
+
+
+//============================================================================
+// Name        : wellformness.cpp
+// Author      : Nitin Shivale
+// Version     : 1
+// Copyright   : Your copyright notice
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
 using namespace std;
-struct node
-{    int roll;
-      struct node *next;
-};
-class info
-{        node *head1=NULL,*temp1=NULL,*head2=NULL,*temp2=NULL,*head=NULL,*temp=NULL,*h1=NULL,*head3=NULL,*temp3=NULL;
-        int c,i,f,j,k;
-       
-        public:
-    
-            node  *create();
-            void insert();
-            void allstud();
-            void vanila();
-            void butters();
-            void uice();
-            void nice();
-            void notice();
-            void ovanila();
-            void obutters();
-            void display();   
+#define size 10
 
-           
-            
-} ;        
-node *info::create()
-{   node *p=new(struct node);
-     cout<<"enter student rollno";
-     cin>>c;
-     p->roll=c;
-     p->next=NULL;
-     return  p;
-  } 
-  void info::insert()
-  { 
-       node *p=create();
-   
-     if(head==NULL)
-     {    head=p;
-     }
-    else
-    {      temp=head;
-          while(temp->next!=NULL)
-          {    temp=temp->next;   }
-              temp->next=p;
-     }        
-         
-   }
-   void info::display()
-   {  temp=head;
-      while(temp->next!=NULL)
-      { cout<<"\n"<<temp->roll;
-        temp=temp->next;
-      } cout<<"\n"<<temp->roll;
-   }
-   void info::allstud()
-   {cout<<"enter no. of students";
-       cin>>k;
-        head=NULL;
-       for(i=0;i<k;i++)
-       {    insert();
-             h1=head;
-          
-       }  display();
-       head=NULL;
-    }
-    void info::vanila()
+class stackexp
+{
+    int top;
+    char stk[size];
+public:
+    stackexp()
     {
-       cout<<"enter no. of  students who like vanila";
-       cin>>k;
-        head=NULL;
-       for(i=0;i<k;i++)
-       { insert();
-         head1=head;
-          
-       }  display();
-        head=NULL;
-     }
-     void info::butters()
-     {
-      cout<<"enter no. of students who like butterscotch";
-       cin>>j;
-       for(i=0;i<j;i++)
-       { insert();
-         head2=head;
-        
-       } display();
-       head=NULL;
-     }
-      void info::uice()
-{    cout<<"students who like vanila or butterscotch\n";
-     temp1=head1;
-     while(temp1!=NULL)
-     {
-       node *p=new(struct node);
-       p->roll=temp1->roll;
-       p->next=NULL;     
-     if(head3==NULL)
-     {    head3=p;
-     }
+     top=-1;
+    }
+    void push(char);
+    char pop();
+    int isfull();
+    int isempty();
+};
+
+void stackexp::push(char x)
+{
+    top=top+1;
+    stk[top]=x;
+}
+
+char stackexp::pop()
+{
+    char s;
+    s=stk[top];
+    top=top-1;
+    return s;
+}
+
+int stackexp::isfull()
+{
+    if(top==size)
+        return 1;
     else
-    {      temp3=head3;
-          while(temp3->next!=NULL)
-          {    temp3=temp3->next;   }
-              temp3->next=p;
-     }
-       
-       temp1=temp1->next;
-     }
-     temp2=head2;
-     while(temp2!=NULL)
-     {    f=0;
-         temp1=head1;
-         while(temp1!=NULL)
-         {
-         if(temp2->roll==temp1->roll)
-         { f=1;                   }
-          temp1=temp1->next;
-         } 
-       
-        
-    
-     if(f==0)
-     {  
-         node *p=new(struct node);
-       p->roll=temp2->roll;
-       p->next=NULL;     
-       if(head3==NULL)
-        {    head3=p;
-        }
-       else
-       {      temp3=head3;
-          while(temp3->next!=NULL)
-          {    temp3=temp3->next;   }
-              temp3->next=p;
-       }
-  }
-      temp2=temp2->next;     
-     }
-     temp3=head3;
-      while(temp3->next!=NULL)
-      { cout<<"\n"<<temp3->roll;
-        temp3=temp3->next;
-      } cout<<"\n"<<temp3->roll;
+        return 0;
 }
 
+int stackexp::isempty()
+{
+    if(top==-1)
+        return 1;
+    else
+        return 0;
+}
 
-void info::ovanila()
-{
-       cout<<"\nstudents  like only vanila \n";
-       temp1=head1;
-       while(temp1!=NULL)
-       {  temp2=head2;
-          f=0;
-          while(temp2!=NULL)
-          {   if(temp1->roll==temp2->roll)
-              {  f=1;              }
-               temp2=temp2->next;
-          } 
-         
-          if(f==0)
-          { cout<<"\n"<<temp1->roll;    }
-             temp1=temp1->next;
-        }
-       
-}
-void info::obutters()
-{
-    cout<<"\nstudents like only butterscotch\n";
-        temp2=head2;
-       while(temp2!=NULL)
-       {  temp1=head1;
-          f=0;
-          while(temp1!=NULL)
-          {   if(temp2->roll==temp1->roll)
-              {  f=1;              }
-               temp1=temp1->next;
-          } 
-         
-          if(f==0)
-          { cout<<"\n"<<temp2->roll;    }
-             temp2=temp2->next;
-        }
-       
-            
-}
-void info::nice()
-{
-       cout<<"\nstudents who like both vanila and butterscotch\n";
-       temp1=head1;
-       while(temp1!=NULL)
-       { temp2=head2;
-         while(temp2!=NULL)
-         {  if(temp1->roll==temp2->roll)
-             { cout<<"\n"<<temp1->roll;   }
-              temp2=temp2->next;
-          }
-            
-            temp1=temp1->next;
-        }
-        
-}
- void info::notice()
- {
-
-    cout<<"\nstudents who like neither vanila nor butterscotch\n";
-    temp=h1;
-       while(temp!=NULL)
-       {  temp3=head3;
-          f=0;
-          while(temp3!=NULL)
-          {   if(temp->roll==temp3->roll)
-              {  f=1;              }
-               temp3=temp3->next;
-          } 
-         
-          if(f==0)
-          { cout<<"\n"<<temp->roll;    }
-             temp=temp->next;
-        }
-      
-}
- 
 int main()
-  { info s;
-  int i;
-   
-          char ch;
-       do{
-          cout<<"\n choice the options";
-          cout<<"\n  1. To enter all students rollno  ";
-          cout<<"\n  2. To enter the rollno of student who like vanila";
-          cout<<"\n  3.  To enter the rollno of student who like butterscotch";
-          cout<<"\n  4.  To display the rollno of student who like vanila or butterscotch";
-          cout<<"\n  5.  To display the rollno of student who like only vanila";
-          cout<<"\n  6.  To display the rollno of student who like only butterscotch";
-          cout<<"\n  7.  To display the rollno of student who like both vanila and butterscotch ";
-          cout<<"\n  8.  To display the rollno of student who neither like vanila nor butterscotch";
-        
-  
-          cin>>i;
-         switch(i)
-         {        case 1:   s.allstud();
-                                  break;
-         
-                 case 2:   s.vanila(); 
-                                  break;
-                  case 3: s.butters();
-                                  break;
-                  case 4:   s.uice();
-                                  break;
-                  case 5:   s.ovanila();
-                                  break;
-                  case 6:   s. obutters();
-                                  break;
-                  case 7:   s.nice(); 
-                                  break;
-                  case 8:   s.notice();
-                                  break;      
-                
-               
-                                        
-                  default:  cout<<"\n unknown choice";
-          }
-            cout<<"\n do you want to continue enter y/Y \n";
-            cin>>ch;
-       
-       }while(ch=='y'||ch=='Y');   
-
-return 0;
+{
+    stackexp s1;
+    char exp[20],ch;
+    int i=0;
+    cout << "\n\t!!Well Formness of Parenthesis..!!!!" << endl; // prints !!!Hello World!!!
+    cout<<"\nEnter the expression to check whether it is in well form or not :  ";
+    cin>>exp;
+    if((exp[0]==')')||(exp[0]==']')||(exp[0]=='}'))
+    {
+        cout<<"\n Invalid Expression.....\n";
+        return 0;
+    }
+    else
+    {
+        while(exp[i]!='\0')
+        {
+            ch=exp[i];
+            switch(ch)
+            {
+            case '(':s1.push(ch);break;
+            case '[':s1.push(ch);break;
+            case '{':s1.push(ch);break;
+            case ')':s1.pop();break;
+            case ']':s1.pop();break;
+            case '}':s1.pop();break;
+            }
+            i=i+1;
+        }
+    }
+    if(s1.isempty())
+    {
+        cout<<"\nExpression is well parenthesis...\n";
+    }
+    else
+    {
+        cout<<"\nSorry !!! Invalid Expression or not in well parenthesized....\n";
+    }
+    return 0;
 }
