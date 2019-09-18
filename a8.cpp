@@ -23,8 +23,25 @@ public:
 	void display();
 	char peek();
 	void free();
+	int precedence(char);
+	int isOperator(char);
 };
-
+int Stack::isOperator(char op){
+	if(op=='^'||op=='*'||op=='/'||op=='+'||op=='-')
+		return 1;
+	else 
+		return 0;
+}
+int Stack::precedence(char op){
+	if(op=='^')
+		return 3;
+	else if(op=='*'||op=='/')
+		return 2;
+	else if(op=='+'||op=='-')
+		return 1;
+	else 
+		return 0;
+}
 int Stack::isEmpty(){
 	if(top==NULL)
 		return 1;
@@ -39,7 +56,7 @@ char Stack::peek(){
 void Stack::display(){
 	Node* ptr=top;
 	if(top==NULL){
-		cout<<"\nStack is Empty";
+		cout<<"\n#";
 		return;
 	}
 	while(ptr!=NULL){
@@ -58,7 +75,7 @@ int Stack::push(char c){
 int Stack::pop(){
 	Node* temp;
 	if(top==NULL){
-		cout<<"\nStack is Empty";
+		cout<<"\n#";
 		return 0;
 	}	
 	else{
@@ -72,22 +89,54 @@ void Stack::free(){
 	top=NULL;
 }
 int main(){
+	int j=0,len;
 	Stack a;
-	a.push('a');
-	a.push('b');
-	a.push('c');
-	a.push('d');
-	cout<<a.peek()<<"\n";
-	a.pop();
-	cout<<a.peek()<<"\n";
-	a.pop();
-	cout<<a.peek()<<"\n";
-	a.pop();
-	cout<<a.peek()<<"\n";
-	a.pop();
-	cout<<a.peek()<<"\n";
-	a.pop();
-	cout<<a.peek()<<"\n";
+	char symbol,top;
+	string infix,postfix;
+	cin>>infix;
+	len=infix.length();
+	infix[len]=')';
+	postfix=infix;
+	a.push('(');
+	for(int i=0;infix[i]!=0;i++){
+		symbol=infix[i];
+		if(symbol=='('){
+			a.push('(');
+		}
+		else if(symbol==')'&&!a.isEmpty()){
+			while(a.peek()!='('){
+				postfix[j]=a.peek();
+				a.pop();
+				j++;
+			}
+			a.pop();
+		}
+		else if(a.isOperator(symbol)){
+			top=a.peek();
+			if(a.precedence(top)<a.precedence(symbol))
+				a.push(symbol);
+			else{
+				while(a.precedence(top)>=a.precedence(symbol)){
+					postfix[j]=a.peek();
+					a.pop();
+					top=a.peek();
+					j++;
+				}
+				a.push(symbol);
+			}
+		}
+		else if(isalpha(symbol)||isdigit(symbol)){
+			postfix[j]=symbol;
+			j++;
+		}
+		else
+		cout<<"Invalid";
+	}
+	for(;j<infix.length();j++)
+		postfix[j]='\0';
+	cout<<postfix;
+	cout<<"\n";
+	a.display();
 	return 0;
 }
 
