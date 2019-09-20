@@ -7,100 +7,103 @@
 //============================================================================
 #include<bits/stdc++.h>
 using namespace std;
-class Node{
-	char ch;
-	Node* link;
-public:
-	Node(char);
-	friend class Stack;
-};
-Node::Node(char c){
-	ch=c;
-	link=NULL;
-}
+#define MAX 256
+template<class T>
 class Stack{
-	Node *top;
+	T arr[MAX];
+	int top;
 public:
 	Stack(){
-		top=NULL;
+		top=-1;
 	}
-	int push(char);
-	int pop();
-	int isEmpty();
-	void display();
-	char peek();
-	void free();
-	int precedence(char);
-	int isOperator(char);
+	
+	
+	void push(T a){
+		top++;
+		if(top<MAX)
+			arr[top]=a;
+		else{
+			cout<<"Stack is FULL";
+			top--;
+		}	
+	}
+	T peek(){
+		if(top==-1)
+			return '#';
+		return arr[top];
+	}
+	
+	
+	void pop(){
+		if(top==-1){
+			cout<<"*Undefined*";
+			cout<<"\n*Operator(s) Mismatch";
+			return;
+		}
+		top--;
+	}
+	
+	
+	bool isEmpty(){
+		return top==-1;
+	}
+	
+	
+	bool isFull(){
+		return top==MAX;
+	}
+	
+	
+	void display(){
+		for(int i=top;i>=0;i--)
+			cout<<arr[i]<<" ";
+	}
+	
+	
+	~Stack(){
+		top=-1;
+	}
 };
-int Stack::isEmpty(){
-	if(top==NULL)
-		return 1;
-	else
-		return 0;
-}
-char Stack::peek(){
-	if(top==NULL)
-		return '#';
-	return top->ch;
-}
-void Stack::display(){
-	Node* ptr=top;
-	if(top==NULL){
-		cout<<"\n#";
-		return;
-	}
-	while(ptr!=NULL){
-		cout<<ptr->ch<<" ";
-		ptr=ptr->link;
-	}
-	cout<<"\n";
-}
-int Stack::push(char c){
-	Node* temp;
-	temp=new Node(c);
-	temp->link=top;
-	top=temp;
-	return 1;
-}
-int Stack::pop(){
-	Node* temp;
-	if(top==NULL){
-		cout<<"\n#";
-		return 0;
-	}
-	else{
-		temp=top;
-		top=top->link;
-		delete temp;
-		return 1;
-	}
-}
-void Stack::free(){
-	top=NULL;
-}
+
+
+
 
 class Expression{
-	string str;
+	char str[256];
 public:
-	void read(string);
+	Expression(){
+		str[0]='\0';
+	}
+	void read();
 	void display();
 	bool isValid();
+	void append(char);
 	int getLength();
 	int precedence(char);
 	int isOperator(char);
+	float evaluate();
 	Expression infixToPostfix();
+	~Expression(){
+		str[0]='\0';
+	}
 };
 int Expression::getLength(){
 	int i;
 	for(i=0;str[i]!='\0';i++);
 	return i;
 }
-void Expression::read(string exp){
-	str=exp;
+void Expression::read(){
+	cout<<"\nEnter Infix Expression (without space): ";
+	cin>>str;
 }
 void Expression::display(){
-	cout<<"\n"<<str;
+	cout<<str;
+}
+void Expression::append(char c){
+	int i;
+	for(i=0;str[i]!=0;i++);
+	str[i]=c;
+	str[i+1]='\0';
 }
 int Expression::isOperator(char op){
 	if(op=='^'||op=='*'||op=='/'||op=='+'||op=='-')
@@ -119,7 +122,7 @@ int Expression::precedence(char op){
 		return 0;
 }
 bool Expression::isValid(){
-	Stack s;
+	Stack<char> s;
 	if(str[0]=='}'||str[0]==')'||str[0]==']'){
 		return 0;
 	}
@@ -157,15 +160,11 @@ bool Expression::isValid(){
 		return 0;
 }
 Expression Expression::infixToPostfix(){
-	Stack s;
+	Stack<char> s;
 	char symbol,top;
-	int j=0,len;
-	string postfix;
 	Expression exp;
-	len=str.length();
-	str[len]=')';
-	postfix=str;
 	s.push('(');
+	str[getLength()]=')';
 	for(int i=0;str[i]!='\0';i++){
 		symbol=str[i];
 		if(symbol=='('){
@@ -173,9 +172,8 @@ Expression Expression::infixToPostfix(){
 		}
 		else if(symbol==')'&&!s.isEmpty()){
 			while(s.peek()!='('){
-				postfix[j]=s.peek();
+				exp.append(s.peek());
 				s.pop();
-				j++;
 			}
 			s.pop();
 		}
@@ -185,37 +183,82 @@ Expression Expression::infixToPostfix(){
 				s.push(symbol);
 			else{
 				while(precedence(top)>=precedence(symbol)){
-					postfix[j]=s.peek();
+					exp.append(s.peek());
 					s.pop();
 					top=s.peek();
-					j++;
 				}
 				s.push(symbol);
 			}
 		}
 		else if(isalpha(symbol)||isdigit(symbol)){
-			postfix[j]=symbol;
-			j++;
+			exp.append(symbol);
 		}
-		else
-			return exp;
+		else{
+			exp.str[0]='\0';
+			break;
+		}
 	}
-	for(;j<str.length();j++)
-		postfix[j]='\0';
-	if(!s.isEmpty())
-		return exp;
-	exp.read(postfix);
+	if(!s.isEmpty()){
+		exp.str[0]='\0';
+	}
 	return exp;
+}
+float Expression::evaluate(){
+	Stack<float> s;
+	char symbol,top;
+	float a,b;
+	for(int i=0;str[i]!='\0';i++){
+		symbol=str[i];
+		if(isalpha(symbol)){
+			cout<<"*Undefined*";
+			cout<<"\n*Ambiguity in Variables!";
+			return 0;
+		}
+		else if(isdigit(symbol)){
+			a=symbol-'0';
+			s.push(a);
+		}
+		else if(isOperator(symbol)){
+			b=s.peek();
+			s.pop();
+			a=s.peek();
+			s.pop();
+			switch(symbol){
+				case '+': s.push(a+b);
+							break;
+				case '-': s.push(a-b);
+							break;
+				case '*': s.push(a*b);
+							break;
+				case '/': s.push(a/b);
+							break;
+			}
+		}
+	}
+	s.display();
+	return 0;
 }
 int main(){
 	Expression infix,postfix;
-	string exp;
-	cin>>exp;
-	infix.read(exp);
-	postfix=infix.infixToPostfix();
-	if(postfix.getLength())
-		postfix.display();
-	else
-		cout<<"\nInvalid Expression";
+	int rep=1;
+	float val;
+	while(rep){
+		infix.read();
+		postfix=infix.infixToPostfix();
+		if(postfix.getLength()){
+			cout<<"Postfix Expression is: ";
+			postfix.display();
+			cout<<"\nEvaluation: ";
+			cout<<"\n";
+			infix.display();cout<<"\b = ";postfix.evaluate();
+			
+		}
+		else
+			cout<<"\nInvalid Infix Expression!";
+		cout<<"\n\n---------------------------------------------------------";
+		cout<<"\nDo You Want to Enter Another Expression(0/1): ";
+		cin>>rep;
+	}
+	cout<<"\n--------------------------END----------------------------\n";
 	return 0;
 }
