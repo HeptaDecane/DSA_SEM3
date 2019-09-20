@@ -61,7 +61,7 @@ int Stack::pop(){
 	if(top==NULL){
 		cout<<"\nStack is Empty";
 		return 0;
-	}	
+	}
 	else{
 		temp=top;
 		top=top->link;
@@ -72,61 +72,76 @@ int Stack::pop(){
 void Stack::free(){
 	top=NULL;
 }
+class Expression{
+	string str;
+public:
+	void read(string);
+	void display();
+	bool isValid();
+};
+void Expression::read(string exp){
+	str=exp;
+}
+void Expression::display(){
+	cout<<"\n"<<str;
+}
+bool Expression::isValid(){
+	Stack s;
+	if(str[0]=='}'||str[0]==')'||str[0]==']'){
+		return 0;
+	}
+	for(int i=0;str[i]!='\0';i++){
+		if(str[i]=='{')
+			s.push(str[i]);
+		else if(str[i]=='[')
+			s.push(str[i]);
+		else if(str[i]=='(')
+			s.push(str[i]);
+		if(!s.isEmpty()){
+			if(str[i]==')'&&s.peek('('))
+				s.pop();
+			else if(str[i]==')'&&!s.peek('('))
+				return 0;
+			if(str[i]=='}'&&s.peek('{'))
+				s.pop();
+			else if(str[i]=='}'&&!s.peek('{'))
+				return 0;
+			if(str[i]==']'&&s.peek('['))
+				s.pop();
+			else if(str[i]==']'&&!s.peek('['))
+				return 0;
+		}
+		else if(s.isEmpty()){
+			if(str[i]=='}'||str[i]==')'||str[i]==']'){
+				return 0;
+				break;
+			}
+		}
+	}
+	if(s.isEmpty())
+		return 1;
+	else
+		return 0;
+}
 int main(){
 	int rep=1;
 	while(rep){
-		Stack exp;
-		string str;
-		char top,ch;
+		Expression exp;
+		string s;
 		cout<<"\nEnter the Expression: ";
-		cin>>str;
-		int flag=1;
-		if(str[0]=='}'||str[0]==')'||str[0]==']'){
-			flag=0;
-		}
-		for(int i=0;str[i]!='\0';i++){
-			if(str[i]=='{')
-				exp.push(str[i]);
-			else if(str[i]=='[')
-				exp.push(str[i]);
-			else if(str[i]=='(')
-				exp.push(str[i]);
-			if(!exp.isEmpty()){
-				if(str[i]==')'&&exp.peek('('))
-					exp.pop();
-				else if(str[i]==')'&&!exp.peek('('))
-					flag=0;
-				if(str[i]=='}'&&exp.peek('{'))
-					exp.pop();
-				else if(str[i]=='}'&&!exp.peek('{'))
-					flag=0;
-				if(str[i]==']'&&exp.peek('['))
-					exp.pop();
-				else if(str[i]==']'&&!exp.peek('['))
-					flag=0;
-			}
-			else if(exp.isEmpty()){
-				if(str[i]=='}'||str[i]==')'||str[i]==']'){
-					flag=0;
-					break;
-				}
-			}
-		}
-		if(flag==1&&exp.isEmpty()==1)
-			cout<<"\n--->Expression is well Paranthised";
+		cin>>s;
+		exp.read(s);
+		if(exp.isValid())
+			cout<<"\nExpression is Valid";
 		else
-			cout<<"\n--->Expression is not Well Paranthised";
+			cout<<"\nExpresasion is Invalid";
 		cout<<"\n----------------------------------------------------------------------------";
-		exp.free();
-		str[0]='\0';
 		cout<<"\nDo You Want to Check Another Expression? (0/1): ";
 		cin>>rep;
 	}
 	cout<<"\nEND...";
 	return 0;
 }
-
-
 
 
 
