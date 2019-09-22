@@ -180,8 +180,18 @@ float Expression::evaluate(){
 		}
 		else if(isOperator(symbol)&&!s.isEmpty()){
 			b=s.peek();
+			if(s.isEmpty()){
+				cout<<"*Undefined*";
+				cout<<"\n*Operator(s) MisMatch";
+				return 0;				
+			}
 			s.pop();
 			a=s.peek();
+			if(s.isEmpty()){
+				cout<<"*Undefined*";
+				cout<<"\n*Operator(s) MisMatch-";
+				return 0;			
+			}
 			s.pop();
 			switch(symbol){
 				case '+': s.push(a+b);
