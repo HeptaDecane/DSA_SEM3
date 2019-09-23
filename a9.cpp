@@ -28,6 +28,7 @@ public:
 	void priorityEnqueue(string,int);
 	void dequeue();
 	void display();
+	void menu();
 };
 Queue::Queue(){
 	front=rear=NULL;
@@ -66,7 +67,7 @@ void Queue::priorityEnqueue(string _code,int _priority){
 	}
 	temp->link=p;
 	front=temp;
-	
+
 }
 void Queue::display(){
 	Node *ptr;
@@ -89,35 +90,50 @@ void Queue::dequeue(){
 	front=front->link;
 	delete temp;
 }
+void Queue::menu(){
+	cout<<"\n------------------TASK SCHEDULING-------------------";
+	cout<<"\nPress 1: Add Task in Simple Queue";
+	cout<<"\nPress 2: Perform and Remove Task in Simple Queue";
+	cout<<"\nPress 3: Enlist Simple Queue";
+	cout<<"\n\nPress 4: Add Task in Priority Queue";
+	cout<<"\nPress 5: Perform and Remove Task in Priority Queue";
+	cout<<"\nPress 6: Enlist Priority Queue";
+	cout<<"\n\nPress 9: Display Options";
+}
 int main(){
 	Queue simpleQueue,priorityQueue;
-	simpleQueue.simpleEnqueue("abc");
-	simpleQueue.simpleEnqueue("def");
-	simpleQueue.simpleEnqueue("ghi");
-	simpleQueue.simpleEnqueue("jkl");
-	simpleQueue.simpleEnqueue("mno");
-	simpleQueue.simpleEnqueue("pqr");
-	simpleQueue.simpleEnqueue("stu");
-	simpleQueue.simpleEnqueue("vwx");
-	simpleQueue.dequeue();
-	simpleQueue.dequeue();
-	simpleQueue.dequeue();
-	simpleQueue.display();
-	priorityQueue.priorityEnqueue("a",2);
-	priorityQueue.priorityEnqueue("z",1);
-	priorityQueue.priorityEnqueue("c",4);
-	priorityQueue.priorityEnqueue("b",23);
-	priorityQueue.priorityEnqueue("k",0);
-//	priorityQueue.dequeue();
-//	priorityQueue.dequeue();
-//	priorityQueue.dequeue();
-//	priorityQueue.dequeue();
-//	priorityQueue.dequeue();
-//	priorityQueue.dequeue();
-	priorityQueue.display();
-	
+	string code;
+	int choice,priority;
+	simpleQueue.menu();
+	do{
+		cout<<endl<<"____________________________________________________";
+		cout<<endl<<"Enter Choice [Press 0:exit|9:Options]: ";
+		cin>>choice;
+		switch(choice){
+			case 1: cout<<"\nEnter Task Code: ";cin>>code;
+					simpleQueue.simpleEnqueue(code);
+					break;
+			case 2: simpleQueue.dequeue();
+					break;
+			case 3: simpleQueue.display();
+					break;
+			case 4: cout<<"\nEnter Task Code: ";cin>>code;
+					cout<<"\nEnter Task Priority: ";cin>>priority;
+					priorityQueue.priorityEnqueue(code,priority);
+					break;
+			case 5: priorityQueue.dequeue();
+					break;
+			case 6: priorityQueue.display();
+					break;
+			case 9: simpleQueue.menu();
+					break;
+			case 0: cout<<"\n----------------------END---------------------------";
+					break;
+			default: cout<<"\nInvalid Choice Entered!";
+		}
+	}while(choice);
+
+
 	return 0;
 }
-
-
 
