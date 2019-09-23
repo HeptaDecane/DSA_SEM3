@@ -122,9 +122,11 @@ int Expression::precedence(char op){
 Expression Expression::infixToPostfix(){
 	Stack<char> s;
 	char symbol,top;
+	int l=getLength();
 	Expression exp;
 	s.push('(');
-	str[getLength()]=')';
+	str[l]=')';
+	str[l+1]='\0';
 	for(int i=0;str[i]!='\0';i++){
 		symbol=str[i];
 		if(symbol=='('){
@@ -139,8 +141,9 @@ Expression Expression::infixToPostfix(){
 		}
 		else if(isOperator(symbol)){
 			top=s.peek();
-			if(precedence(top)<precedence(symbol))
+			if(precedence(top)<precedence(symbol)){
 				s.push(symbol);
+			}
 			else{
 				while(precedence(top)>=precedence(symbol)){
 					exp.append(s.peek());
@@ -183,14 +186,14 @@ float Expression::evaluate(){
 			if(s.isEmpty()){
 				cout<<"*Undefined*";
 				cout<<"\n*Operator(s) MisMatch";
-				return 0;				
+				return 0;
 			}
 			s.pop();
 			a=s.peek();
 			if(s.isEmpty()){
 				cout<<"*Undefined*";
 				cout<<"\n*Operator(s) MisMatch-";
-				return 0;			
+				return 0;
 			}
 			s.pop();
 			switch(symbol){
