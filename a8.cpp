@@ -68,7 +68,7 @@ public:
 
 
 class Expression{
-	char str[256];
+	char str[MAX];
 public:
 	Expression(){
 		str[0]='\0';

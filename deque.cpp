@@ -1,241 +1,205 @@
-/*
- * C++ Program To Implement Doubly Ended Queue
- */
-#include <iostream>
-#include <cstdlib>
-using namespace std;
-/*
- * Node Declaration
- */
-struct node
-{
-    int info;
-    node *next;
-    node *prev;
- 
-}*head, *tail;
- 
-/*
- * Class Declaration
- */
-class dqueue
-{
-    public:
-        int top1, top2;
-        void insert();
-        void del();
-        void display();
-        dqueue()
-        {
-            top1 = 0;
-            top2 = 0;
-            head = NULL;
-            tail = NULL;
-        }
-};
- 
-/*
- * Main: Contains Menu
- */
-int main()
-{
-    int choice;
-    dqueue dl;
-    while (1)
-    {
-        cout<<"\n-------------"<<endl;
-        cout<<"Operations on Deque"<<endl;
-        cout<<"\n-------------"<<endl;
-        cout<<"1.Insert Element into the Deque"<<endl;
-        cout<<"2.Delete Element from the Deque"<<endl;
-        cout<<"3.Traverse the Deque"<<endl;
-        cout<<"4.Quit"<<endl;
-        cout<<"Enter your Choice: ";
-        cin>>choice;
-        cout<<endl;
-        switch(choice)
-        {
-        case 1:
-            dl.insert();
-            break;
-        case 2:
-            dl.del();
-            break;
-        case 3:
-            dl.display();
-            break;
-        case 4:
-            exit(1);
-            break;
-        default:
-            cout<<"Wrong Choice"<<endl;
-        }
-    }
-    return 0;    
-}
- 
-/*
- * Insert Element in Doubly Ended Queue
- */
-void dqueue::insert()
-{
-    struct node *temp;
-    int ch, value;
-    if (top1 + top2 >= 50)
-    {
-        cout<<"Dequeue Overflow"<<endl;
-        return;
-    }
-    if (top1 + top2 == 0)
-    {
-        cout<<"Enter the value to be inserted: ";
-        cin>>value;
-        head = new (struct node);
-        head->info = value;
-        head->next = NULL;
-        head->prev = NULL;
-        tail = head;
-        top1++;
-        cout<<"Element Inserted into empty deque"<<endl; 
-    }
-    else
-    {
-        while (1)
-        {
-            cout<<endl;
-            cout<<"1.Insert Element at first"<<endl;
-            cout<<"2.Insert Element at last"<<endl;
-            cout<<"3.Exit"<<endl;
-            cout<<endl;
-            cout<<"Enter Your Choice: ";
-            cin>>ch;
-            cout<<endl;
-            switch(ch)
-            {
-            case 1:
-                cout<<"Enter the value to be inserted: ";
-                cin>>value;  
-                temp = new (struct node);
-                temp->info = value;
-                temp->next = head;
-                temp->prev = NULL;
-                head->prev = temp;
-                head = temp;
-                top1++;
-                break;
-            case 2:
-                cout<<"Enter the value to be inserted: ";
-                cin>>value; 
-                temp = new (struct node);
-                temp->info = value;
-                temp->next = NULL;
-                temp->prev = tail;
-                tail->next = temp;
-                tail = temp;
-                top2++;
-                break;
-            case 3:
-                return;
-                break;
-            default:
-                cout<<"Wrong Choice"<<endl;
-            }
-        }
-    }
-}
- 
-/*
- * Delete Element in Doubly Ended Queue
- */
-void dqueue::del()
-{
-    if (top1 + top2 <= 0)
-    {
-        cout<<"Deque Underflow"<<endl;
-        return;
-    }
-    int ch;
-    while (1)
-    {
-        cout<<endl;
-        cout<<"1.Delete Element at first"<<endl;
-        cout<<"2.Delete Element at last"<<endl;
-        cout<<"3.Exit"<<endl;
-        cout<<endl;
-        cout<<"Enter Your Choice: ";
-        cin>>ch;
-        cout<<endl;
-        switch(ch)
-        {
-        case 1:  
-            head = head->next;
-            head->prev = NULL;
-            top1--;
-            break;
-        case 2:
-            tail = tail->prev;
-            tail->next = NULL;
-            top2--;
-            break;
-        case 3:
-            return;
-            break;
-        default:
-            cout<<"Wrong Choice"<<endl;
-        }
-    }
-}
- 
-/*
- * Display Doubly Ended Queue
- */
-void dqueue::display()
-{
-    struct node *temp;
-    int ch;
-    if (top1 + top2 <= 0)
-    {
-        cout<<"Deque Underflow"<<endl;
-        return;
-    }
-    while (1)
-    {
-        cout<<endl;
-        cout<<"1.Display Deque from Beginning"<<endl;
-        cout<<"2.Display Deque from End"<<endl;
-        cout<<"3.Exit"<<endl;
-        cout<<endl;
-        cout<<"Enter Your Choice: ";
-        cin>>ch;
-        cout<<endl;
-        switch (ch)
-        {
-        case 1:  
-            temp = head;
-            cout<<"Deque from Beginning:"<<endl;
-            while (temp != NULL)
-            {
-                cout<<temp->info<<" ";
-                temp = temp->next;                       
-            }
-            cout<<endl;
-            break;
-        case 2:
-            cout<<"Deque from End:"<<endl;
-            temp = tail;
-            while (temp != NULL)
-            {
-                cout<<temp->info<<" ";
-                temp = temp->prev;                      
-            }
-            temp = tail;
-            cout<<endl;
-            break;
-        case 3:
-            return;
-            break;
-        default:
-            cout<<"Wrong Choice"<<endl;
-        }
-    }
-}
+// C++ implementation of De-queue using circular 
+// array 
+#include<iostream> 
+using namespace std; 
+
+// Maximum size of array or Dequeue 
+#define MAX 100 
+
+// A structure to represent a Deque 
+class Deque 
+{ 
+	int arr[MAX]; 
+	int front; 
+	int rear; 
+	int size; 
+public : 
+	Deque(int size) 
+	{ 
+		front = -1; 
+		rear = 0; 
+		this->size = size; 
+	} 
+
+	// Operations on Deque: 
+	void insertfront(int key); 
+	void insertrear(int key); 
+	void deletefront(); 
+	void deleterear(); 
+	bool isFull(); 
+	bool isEmpty(); 
+	int getFront(); 
+	int getRear(); 
+}; 
+
+// Checks whether Deque is full or not. 
+bool Deque::isFull() 
+{ 
+	return ((front == 0 && rear == size-1)|| 
+			front == rear+1); 
+} 
+
+// Checks whether Deque is empty or not. 
+bool Deque::isEmpty () 
+{ 
+	return (front == -1); 
+} 
+
+// Inserts an element at front 
+void Deque::insertfront(int key) 
+{ 
+	// check whether Deque if full or not 
+	if (isFull()) 
+	{ 
+		cout << "Overflow\n" << endl; 
+		return; 
+	} 
+
+	// If queue is initially empty 
+	if (front == -1) 
+	{ 
+		front = 0; 
+		rear = 0; 
+	} 
+
+	// front is at first position of queue 
+	else if (front == 0) 
+		front = size - 1 ; 
+
+	else // decrement front end by '1' 
+		front = front-1; 
+
+	// insert current element into Deque 
+	arr[front] = key ; 
+} 
+
+// function to inset element at rear end 
+// of Deque. 
+void Deque ::insertrear(int key) 
+{ 
+	if (isFull()) 
+	{ 
+		cout << " Overflow\n " << endl; 
+		return; 
+	} 
+
+	// If queue is initially empty 
+	if (front == -1) 
+	{ 
+		front = 0; 
+		rear = 0; 
+	} 
+
+	// rear is at last position of queue 
+	else if (rear == size-1) 
+		rear = 0; 
+
+	// increment rear end by '1' 
+	else
+		rear = rear+1; 
+
+	// insert current element into Deque 
+	arr[rear] = key ; 
+} 
+
+// Deletes element at front end of Deque 
+void Deque ::deletefront() 
+{ 
+	// check whether Deque is empty or not 
+	if (isEmpty()) 
+	{ 
+		cout << "Queue Underflow\n" << endl; 
+		return ; 
+	} 
+
+	// Deque has only one element 
+	if (front == rear) 
+	{ 
+		front = -1; 
+		rear = -1; 
+	} 
+	else
+		// back to initial position 
+		if (front == size -1) 
+			front = 0; 
+
+		else // increment front by '1' to remove current 
+			// front value from Deque 
+			front = front+1; 
+} 
+
+// Delete element at rear end of Deque 
+void Deque::deleterear() 
+{ 
+	if (isEmpty()) 
+	{ 
+		cout << " Underflow\n" << endl ; 
+		return ; 
+	} 
+
+	// Deque has only one element 
+	if (front == rear) 
+	{ 
+		front = -1; 
+		rear = -1; 
+	} 
+	else if (rear == 0) 
+		rear = size-1; 
+	else
+		rear = rear-1; 
+} 
+
+// Returns front element of Deque 
+int Deque::getFront() 
+{ 
+	// check whether Deque is empty or not 
+	if (isEmpty()) 
+	{ 
+		cout << " Underflow\n" << endl; 
+		return -1 ; 
+	} 
+	return arr[front]; 
+} 
+
+// function return rear element of Deque 
+int Deque::getRear() 
+{ 
+	// check whether Deque is empty or not 
+	if(isEmpty() || rear < 0) 
+	{ 
+		cout << " Underflow\n" << endl; 
+		return -1 ; 
+	} 
+	return arr[rear]; 
+} 
+
+// Driver program to test above function 
+int main() 
+{ 
+	Deque dq(5); 
+	cout << "Insert element at rear end : 5 \n"; 
+	dq.insertrear(5); 
+
+	cout << "insert element at rear end : 10 \n"; 
+	dq.insertrear(10); 
+
+	cout << "get rear element " << " "
+		<< dq.getRear() << endl; 
+
+	dq.deleterear(); 
+	cout << "After delete rear element new rear"
+		<< " become " << dq.getRear() << endl; 
+
+	cout << "inserting element at front end \n"; 
+	dq.insertfront(15); 
+
+	cout << "get front element " << " "
+		<< dq.getFront() << endl; 
+
+	dq.deletefront(); 
+
+	cout << "After delete front element new "
+	<< "front become " << dq.getFront() << endl; 
+	return 0; 
+} 
+
