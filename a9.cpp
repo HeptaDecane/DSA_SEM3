@@ -1,3 +1,10 @@
+//============================================================================
+// Name        : a9.cpp
+// Author      : near
+// Version     :
+// Copyright   : Your copyright notice
+// Description : Hello World in C++, Ansi-style
+//============================================================================
 #include<bits/stdc++.h>
 using namespace std;
 class Node{
@@ -88,6 +95,7 @@ void Queue::dequeue(){
 	}
 	temp=front;
 	front=front->link;
+	cout<<"\nTask "<<temp->code<<" Finished!";
 	delete temp;
 }
 void Queue::menu(){
@@ -137,3 +145,122 @@ int main(){
 	return 0;
 }
 
+
+
+
+
+
+/*
+OUTPUT
+------------------TASK SCHEDULING-------------------
+Press 1: Add Task in Simple Queue
+Press 2: Perform and Remove Task in Simple Queue
+Press 3: Enlist Simple Queue
+
+Press 4: Add Task in Priority Queue
+Press 5: Perform and Remove Task in Priority Queue
+Press 6: Enlist Priority Queue
+
+Press 9: Display Options
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 4
+
+Enter Task Code: A
+
+Enter Task Priority: 5
+
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 4
+
+Enter Task Code: B
+
+Enter Task Priority: 3
+
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 4
+
+Enter Task Code: C
+
+Enter Task Priority: 2
+
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 4
+
+Enter Task Code: D
+
+Enter Task Priority: 1
+
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 4
+
+Enter Task Code: E
+
+Enter Task Priority: 4
+
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 6
+
+#FRONT <-- A <-- E <-- B <-- C <-- D <-- #REAR
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 5
+
+Task A Finished!
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 6
+
+#FRONT <-- E <-- B <-- C <-- D <-- #REAR
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 4
+
+Enter Task Code: F
+
+Enter Task Priority: 6
+
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 6
+
+#FRONT <-- F <-- E <-- B <-- C <-- D <-- #REAR
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 5
+
+Task F Finished!
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 4
+
+Enter Task Code: G
+
+Enter Task Priority: 3
+
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 6
+
+#FRONT <-- E <-- G <-- B <-- C <-- D <-- #REAR
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 5
+
+Task E Finished!
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 5
+
+Task G Finished!
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 5
+
+Task B Finished!
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 5
+
+Task C Finished!
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 5
+
+Task D Finished!
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 5
+
+Task Queue is Already Empty!
+____________________________________________________
+Enter Choice [Press 0:exit|9:Options]: 0
+
+----------------------END---------------------------
+ */

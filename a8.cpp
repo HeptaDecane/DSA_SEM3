@@ -1,5 +1,5 @@
 //============================================================================
-// Name        : MockTest.cpp
+// Name        : a8.cpp
 // Author      : near
 // Version     :
 // Copyright   : Your copyright notice
@@ -68,7 +68,7 @@ public:
 
 
 class Expression{
-	char str[MAX];
+	char str[256];
 public:
 	Expression(){
 		str[0]='\0';
@@ -238,3 +238,66 @@ int main(){
 	cout<<"\n--------------------------END----------------------------\n";
 	return 0;
 }
+
+
+
+/*
+OUTPUT
+Enter Infix Expression (without space): a+b+c-d*c/d*f
+Postfix Expression is: ab+c+dc*d/f*-
+
+Evaluation:
+Enter Value of a: 1
+Enter Value of b: 2
+Enter Value of c: 3
+Enter Value of d: 4
+Enter Value of c: 3
+Enter Value of d: 4
+Enter Value of f: 5
+ab+c+dc*d/f*- = -9
+
+---------------------------------------------------------
+Do You Want to Enter Another Expression(0/1): 1
+
+Enter Infix Expression (without space): (a+b)-(c-d)*d
+Postfix Expression is: ab+cd-d*-
+
+Evaluation:
+Enter Value of a: 1
+Enter Value of b: 2
+Enter Value of c: 3
+Enter Value of d: 4
+Enter Value of d: 4
+ab+cd-d*- = 7
+
+---------------------------------------------------------
+Do You Want to Enter Another Expression(0/1): 1
+
+Enter Infix Expression (without space): (a*(d/f)*a)
+Postfix Expression is: adf/*a*
+
+Evaluation:
+Enter Value of a: 1
+Enter Value of d: 4
+Enter Value of f: 3
+Enter Value of a: 1
+adf/*a* = 1.33333
+
+---------------------------------------------------------
+Do You Want to Enter Another Expression(0/1): 1
+
+Enter Infix Expression (without space): a*(b+c)/d
+Postfix Expression is: abc+*d/
+
+Evaluation:
+Enter Value of a: 1
+Enter Value of b: 2
+Enter Value of c: 3
+Enter Value of d: 4
+abc+*d/ = 1.25
+
+---------------------------------------------------------
+Do You Want to Enter Another Expression(0/1): 0
+
+--------------------------END----------------------------
+ */
