@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : a10.cpp
-// Author      : near
+// Author      : Near
 // Version     :
 // Copyright   : Your copyright notice
 // Description : Hello World in C++, Ansi-style
