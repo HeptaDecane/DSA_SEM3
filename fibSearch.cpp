@@ -1,8 +1,9 @@
 // C program for Fibonacci Search 
-#include <stdio.h> 
+#include <bits/stdc++.h>
+using namespace std;
 
 // Utility function to find minimum of two elements 
-int min(int x, int y) { return (x<=y)? x : y; } 
+//int min(int x, int y) { return (x<=y)? x : y; } 
 
 /* Returns index of x if present, else returns -1 */
 int fib0onaccianSearch(int arr[], int x, int n) 
@@ -56,7 +57,7 @@ int fib0onaccianSearch(int arr[], int x, int n)
 	} 
 
 	/* comparing the last element with x */
-	if(fib1 && arr[offset+1]==x)return offset+1; 
+	12if(fib1 && arr[offset+1]==x)return offset+1; 
 
 	/*element not found. return -1 */
 	return -1; 
