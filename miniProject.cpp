@@ -50,7 +50,7 @@ bool SolveSudoku(int grid[N][N])
 
     return true; // success!  
 
-  
+  cout<<row<<" "<<col<<"\n";
 
     // consider digits 1 to 9  
 
