@@ -114,10 +114,6 @@ int Deque::peekRear(){
 void Deque::display(){
 	int i=front;
 	cout<<"\nDeque: ";
-	if(front<=rear)
-		for(int i=front;i<=rear;i++)
-			cout<<array[i]<<" ";
-	else
 		while(true){
 			cout<<array[i]<<" ";
 			if(i==rear)
