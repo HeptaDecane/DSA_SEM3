@@ -29,7 +29,7 @@ public:
 
 Deque::Deque(){
 	front=-1;
-	rear=0;
+	rear=-1;
 	for(int i=0;i<10;i++)
 		array[i]=0;
 }
