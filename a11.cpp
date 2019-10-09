@@ -16,13 +16,15 @@ public:
 	void setData();
 	void display();
 	int linearSearch(int);
-	int sentinalSearch(int);
+	int sentinelSearch(int);
 	int binarySearch(int);
 	int fibonacciSearch(int);
+	void menu();
 };
 Database::Database(){
 	for(int i=0;i<MAX;i++)
 		array[i]=0;
+	n=0;
 }
 void Database::setData(){
 	cout<<"\nEnter No. of Students Attended Training Program: ";
@@ -40,7 +42,7 @@ label:
 				if(array[j]==array[i]){
 					cout<<"\nError: Roll No. "<<array[i]<<" Repeated!\nTry Again!\n";
 					goto label;
-				}	
+				}
 			}
 	}
 }
@@ -76,7 +78,7 @@ int Database::fibonacciSearch(int key){
 			return i;
 	}
 	if(fib1 && array[offset+1]==key)
-		return offset+1; 
+		return offset+1;
 	return -1;
 }
 int Database::binarySearch(int key){
@@ -94,7 +96,7 @@ int Database::binarySearch(int key){
 	}
 	return -1;
 }
-int Database::sentinalSearch(int key){
+int Database::sentinelSearch(int key){
 	array[n]=key;
 	int i=0;
 	while(true){
@@ -104,7 +106,7 @@ int Database::sentinalSearch(int key){
 	}
 	if(i==n)
 		return -1;
-	else 
+	else
 		return i;
 }
 int Database::linearSearch(int key){
@@ -114,13 +116,71 @@ int Database::linearSearch(int key){
 	}
 	return -1;
 }
+void Database::menu(){
+	cout<<"\n-----------------TRAINING PROGRAM-------------------";
+	cout<<"\nPress 1: Input Training Program Attendance";
+	cout<<"\nPress 2: Search by Linear Search";
+	cout<<"\nPress 3: Search by Sentinel Search";
+	cout<<"\nPress 4: Search by Binary Search";
+	cout<<"\nPress 5: Search by Fibonacci Search";
+	cout<<"\nPress 6: Display Attendance";
+	cout<<"\nPress 9: Display Operations";
+}
 int main(){
-	Database obj;
-	obj.setData();
-	obj.display();
+	Database container;
+	int choice,key,index=-1;
+	container.menu();
+	do{
+		cout<<endl<<"____________________________________________________";
+		cout<<endl<<"Enter Choice [Press 0:exit|9:Options]: ";
+		cin>>choice;
+		switch(choice){
+			case 1: cout<<"\nEnter Element: ";
+					index=container.setData();
+					if(index<0)
+						cout<<"\n"<<key<<" is not found in list";
+					else
+						cout<<"\n"<<key<<" found at index: "<<index;
+					break;
+			case 2: cout<<"\nEnter Element to Search : ";cin>>key;
+					index=container.linearSearch(key);
+					if(index<0)
+						cout<<"\n"<<key<<" is not found in list";
+					else
+						cout<<"\n"<<key<<" found at index: "<<index;
+					break;
+			case 3: cout<<"\nEnter Element to Search : ";cin>>key;
+					index=container.sentinelSearch(key);
+					if(index<0)
+						cout<<"\n"<<key<<" is not found in list";
+					else
+						cout<<"\n"<<key<<" found at index: "<<index;
+					break;
+			case 4: cout<<"\nEnter Element to Search : ";cin>>key;
+					index=container.binarySearch(key);
+					if(index<0)
+						cout<<"\n"<<key<<" is not found in list";
+					else
+						cout<<"\n"<<key<<" found at index: "<<index;
+					break;
+			case 5: cout<<"\nEnter Element to Search : ";cin>>key;
+					index=container.fibonacciSearch(key);
+					if(index<0)
+						cout<<"\n"<<key<<" is not found in list";
+					else
+						cout<<"\n"<<key<<" found at index: "<<index;
+					break;
+			case 6: container.display();
+					break;
+			case 9: container.menu();
+					break;
+			case 0: cout<<"\n----------------------END---------------------------\n";
+					break;
+			default: cout<<"\nInvalid Choice Entered!";
+		}
+	}while(choice);
 	return 0;
 }
-
 
 
 
