@@ -10,7 +10,7 @@
 using namespace std;
 #define MAX 50
 class Database{
-	int array[MAX];
+	float array[MAX];
 	int n;
 public:
 	Database();
@@ -90,13 +90,15 @@ void Database::shellSort(){
 	}
 }
 void Database::topFive(){
+	shellSort();
 	int j=n-1,count=0;
-	while(j>0&&count<5){
+	cout<<"\nTop Five Scores: ";
+	while(j>=0&&count<5){
 		cout<<array[j]<<" ";
 		count++;
-		j--;
 		while(array[j]==array[j-1])
 			j--;
+		j--;
 	}
 }
 void Database::setData(){
@@ -112,8 +114,55 @@ label:
 		}
 	}
 }
+void Database::display(){
+	cout<<"\nArray of Marks: \n";
+	for(int i=0;i<n;i++)
+		cout<<array[i]<<"\n";
+}
+void Database::menu(){
+	cout<<"\n-----------------DEQUE OPERATIONS-------------------";
+	cout<<"\nPress 1: Enter Score Array";
+	cout<<"\nPress 2: Sort Scores by Bubble Sort";
+	cout<<"\nPress 3: Sort Scores by Selection Sort";
+	cout<<"\nPress 4: Sort Scores by Insertion Sort";
+	cout<<"\nPress 5: Sort Scores by Shell Sort";
+	cout<<"\nPress 6: Display Top Five Scores";
+	cout<<"\nPress 7: Display Score Array";	
+	cout<<"\nPress 9: Display Operations";
+}
 int main(){
 	Database result;
-	result.setData();
-	result.topFive();
+	int choice,key;
+	result.menu();
+	do{
+		cout<<endl<<"____________________________________________________";
+		cout<<endl<<"Enter Choice [Press 0:exit|9:Options]: ";
+		cin>>choice;
+		switch(choice){
+			case 1: result.setData();
+					break;
+			case 2: cout<<"\nSorted by Bubble Sort!";
+					result.bubbleSort();
+					break;
+			case 3: cout<<"\nSorted by Selection Sort!";
+					result.selectionSort();
+					break;
+			case 4: cout<<"\nSorted by Insertion Sort!";
+					result.insertionSort();
+					break;
+			case 5: cout<<"\nSorted by Shell Sort!";
+					result.shellSort();
+					break;
+			case 6: result.topFive();
+					break;
+			case 7: result.display();
+					break;
+			case 9: result.menu();
+					break;
+			case 0: cout<<"\n----------------------END---------------------------\n";
+					break;
+			default: cout<<"\nInvalid Choice Entered!";
+		}
+	}while(choice);	
+	return 0;
 }
