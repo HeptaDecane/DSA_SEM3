@@ -26,6 +26,7 @@ public:
 	void sortList();
 	bool deleteByValue(char);
 	void display();
+	int search(char);
 	int count();
 	friend class Hash;
 };
@@ -40,6 +41,16 @@ void List::pushBack(char _data){
 	while(t->link!=NULL)
 		t=t->link;
 	t->link=temp;
+}
+int List::search(char key){
+	Node *t;
+	int index=0;
+	for(t=start;t!=NULL;t=t->link){
+		if(t->data==key)
+			return index;
+		index++;
+	}
+	return -1;
 }
 bool List::deleteByValue(char _data){
 	Node *t,*prev;
@@ -110,7 +121,10 @@ public:
 	void display();
 	void sortHash();
 	void free();
+	void demoMenu();
+	void hashingMenu();
 	bool erase(char);
+	int search(char);
 	string hashGenerator(string);
 	string returnHash();
 	int hashFunction(int);
@@ -166,6 +180,22 @@ bool Hash::erase(char key){
 	int index=hashFunction(key);
 	return table[index].deleteByValue(key);
 }
+int Hash::search(char key){
+	int index=hashFunction(key);
+	return table[index].search(key);
+}
+void Hash::demoMenu(){
+	cout<<"\n------------------DEMONSTRATION--------------------";
+	cout<<"\n| Press 1: Insert Character into HashTable        |";
+	cout<<"\n| Press 2: Display HashTable Arrangement          |";
+	cout<<"\n| Press 3: Count Entries in HashTable             |";
+	cout<<"\n| Press 4: Sort HashTable                         |";
+	cout<<"\n| Press 5: Search element in HashTable            |";
+	cout<<"\n| Press 6: Delete element from HashTable          |";
+	cout<<"\n| Press 9: Display Options                        |";
+	cout<<"\n| Press 0: Exit From Demonstration                |";
+	cout<<"\n---------------------------------------------------";
+}
 void Hash::display(){
 	for(int i=0;i<rows;i++){
 		cout<<i<<":";
@@ -216,23 +246,151 @@ int Hash::count(){
 		total+=table[i].count();
 	return total;
 }
-int main(){
-	Hash container(13);
-	string str="NearLawiet";
-	string s1,str1,s2;
-	s1=container.hashGenerator(str);
-	container.free();
-	cout<<"Enter String: ";cin>>str1;
-	s2=container.hashGenerator(str1);
-	if(s1==s2)
-		cout<<"\nAccess Granted";
-	else
-		cout<<"\nAccess Denied";
-	
-	
 
+class Main{
+public:
+	int demo();
+	int hashing();
+};
+int Main::demo(){
+	int n;
+	cout<<"\n@ DEMONSTRATION";
+	cout<<"\n\nNote:";
+	cout<<"\n     Hash function used: key % No. of Rows";
+	cout<<"\n     Hence, Any Prime Number is Recommended as No. of Rows\n";
+	cout<<"\nEnter No. of Rows to construct HashTable: ";
+	cin>>n;
+	Hash container(n);
+	cout<<"\nHashTable With "<<n<<" Rows Created!";
+	int choice,index;
+	char key;
+	container.demoMenu();
+	do{
+		cout<<"\n___________________________________________________";
+		cout<<endl<<"Enter Choice [Press 0:exit|9:Options]: ";
+		cin>>choice;
+		switch(choice){
+			case 1: cout<<"\nEnter Character: ";cin>>key;
+					container.insert(key);
+					cout<<key<<" Inserted!";
+					break;
+			case 2: container.display();
+					break;
+			case 3: cout<<"\nNo. of Entries = "<<container.count();
+					break;
+			case 4: container.sortHash();
+					cout<<"\nHashTable Sorted in Alphabetic order!";
+					break;
+			case 5: cout<<"\nEnter Target Element to Search: ";cin>>key;
+					index=container.search(key);
+					if(index<0)
+						cout<<key<<" Not Found in HashTable!";
+					else
+						cout<<key<<" Found at:\n  Row: "<<container.hashFunction(key)<<"\n  Pos: "<<index;
+					break;
+			case 6: cout<<"\nEnter Target Element to Delete: ";cin>>key;
+					if(container.erase(key))
+						cout<<key<<" Erased from HashTable!";
+					else
+						cout<<key<<" Not Found in HashTable!";
+					break;
+			case 9: container.demoMenu();
+					break;
+			case 0: cout<<"\n---------------------------------------------------";
+					break;
+			default: cout<<"\nInvalid Choice Entered!";
+		}
+	}while(choice);
+	cout<<"\n\n";
+	return 0;
+}
+int Main::hashing(){
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main(){
+	Main driver;
+	int choice;
+	cout<<"\n@ MAIN MENU\n";
+	cout<<"\n-------------------HASH TABLES---------------------";
+	cout<<"\n|  Press 1: Demonstration of DataStructure        |";
+	cout<<"\n|  Press 2: Simulate PassWord Hashing             |";
+	cout<<"\n|  Press 0: Exit From Program                     |";
+	cout<<"\n---------------------------------------------------";
+	cout<<"\nEnter Choice: ";cin>>choice;
+	while(choice){
+		switch(choice){
+			case 1:	driver.demo();
+					cout<<"\n@ MAIN MENU\n";
+					break;
+			case 2: driver.hashing();
+					cout<<"\n@ MAIN MENU\n";
+					break;
+			default: cout<<"\nInvalid Choice! Try Again!";
+		}
+		cout<<"\n-------------------HASH TABLES---------------------";
+		cout<<"\n|  Press 1: Demonstration of DataStructure        |";
+		cout<<"\n|  Press 2: Simulate PassWord Hashing             |";
+		cout<<"\n|  Press 0: Exit From Program                     |";
+		cout<<"\n---------------------------------------------------";
+		cout<<"\nEnter Choice: ";cin>>choice;
+	}
+	cout<<"\n-----------------------END-------------------------\n";
 	
 	return 0;
 }
+
+
+
+
+
+
+//int main(){
+//	Hash container(13);
+//	string str="NearLawiet";
+//	string s1,str1,s2;
+//	s1=container.hashGenerator(str);
+//	container.free();
+//	cout<<"Enter String: ";cin>>str1;
+//	s2=container.hashGenerator(str1);
+//	if(s1==s2)
+//		cout<<"\nAccess Granted";
+//	else
+//		cout<<"\nAccess Denied";
+//	
+//	
+
+//	
+//	return 0;
+//}
 
 
