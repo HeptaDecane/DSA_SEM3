@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 #include<cstdio>
 #include<cstdlib>
+#include<fstream>
 using namespace std;
 class Node{
 	char data;
@@ -196,6 +197,15 @@ void Hash::demoMenu(){
 	cout<<"\n| Press 0: Exit From Demonstration                |";
 	cout<<"\n---------------------------------------------------";
 }
+void Hash::hashingMenu(){
+	cout<<"\n----------------PASSWORD HASHING-------------------";
+	cout<<"\n| Press 1: Create Password Hashed File            |";
+	cout<<"\n| Press 2: Change Existing PassWord               |";
+	cout<<"\n| Press 3: Show Hashed Password                   |";
+	cout<<"\n| Press 9: Display Options                        |";
+	cout<<"\n| Press 0: Exit From Demonstration                |";
+	cout<<"\n---------------------------------------------------";
+}
 void Hash::display(){
 	for(int i=0;i<rows;i++){
 		cout<<i<<":";
@@ -254,7 +264,7 @@ public:
 };
 int Main::demo(){
 	int n;
-	cout<<"\n@ DEMONSTRATION";
+	cout<<"\n@DEMONSTRATION";
 	cout<<"\n\nNote:";
 	cout<<"\n     Hash function used: key % No. of Rows";
 	cout<<"\n     Hence, Any Prime Number is Recommended as No. of Rows\n";
@@ -266,8 +276,8 @@ int Main::demo(){
 	char key;
 	container.demoMenu();
 	do{
-		cout<<"\n___________________________________________________";
-		cout<<endl<<"Enter Choice [Press 0:exit|9:Options]: ";
+		cout<<"\n\n@DEMONSTRATION_____________________________________";
+		cout<<"\nEnter Choice [Press 0:exit|9:Options]: ";
 		cin>>choice;
 		switch(choice){
 			case 1: cout<<"\nEnter Character: ";cin>>key;
@@ -296,47 +306,89 @@ int Main::demo(){
 					break;
 			case 9: container.demoMenu();
 					break;
-			case 0: cout<<"\n---------------------------------------------------";
+			case 0: cout<<"\n---------------------------------------------------\n";
 					break;
-			default: cout<<"\nInvalid Choice Entered!";
+			default: cout<<"\nInvalid Choice! Try Again!";
 		}
 	}while(choice);
-	cout<<"\n\n";
+	container.free();
+	cout<<"\n";
 	return 0;
 }
 int Main::hashing(){
-
+	string pass0,hash0,newPass,newHash;
+	Hash container(13);
+	int choice;
+	fstream file;
+	cout<<"\n@HASHING";
+	container.hashingMenu();	
+	do{
+		cout<<"\n\n@HASHING__________________________________________";
+		cout<<"\nEnter Choice [Press 0:exit|9:Options]: ";
+		cin>>choice;
+		switch(choice){
+			case 1: file.open("record.txt",ios::in|ios::out|ios::ate);
+					if(!file.tellp()){
+						cout<<"\nEnter PassWord: ";cin>>pass0;
+						hash0=container.hashGenerator(pass0);
+						file<<hash0;
+						cout<<"\nPassWord Set Successfully!";
+					}
+					else
+						cout<<"\nPassWord Already Exists!";
+					file.close();
+					container.free();
+					break;
+			case 2: file.open("record.txt",ios::in|ios::out|ios::ate);
+					if(file.tellp()){
+						string currentPass,currentHash,oldHash;
+						file.close();
+						file.open("record.txt",ios::in);
+						file>>oldHash;
+						cout<<"\nEnter Current PassWord: ";cin>>currentPass;
+						currentHash=container.hashGenerator(currentPass);
+						file.close();
+						container.free();
+						if(currentHash==oldHash){
+							cout<<"\nEnter New PassWord: ";cin>>newPass;
+							newHash=container.hashGenerator(newPass);
+							file.open("record.txt",ios::out|ios::trunc);
+							file<<newHash;
+							file.close();
+							cout<<"\nPassWord Changed Successfully!";
+						}
+						else
+							cout<<"\nWrong PassWord! Try Again.";
+					}
+					else
+						cout<<"PassWord Doesn't Exists.";
+					file.close();
+					container.free();
+					break;
+			case 3: file.open("record.txt",ios::in|ios::out|ios::ate);
+					if(file.tellp()){
+						file.close();
+						string currentHash;
+						file.open("record.txt",ios::in);
+						file>>currentHash;
+						cout<<"\nHashed PassWord: "<<currentHash;
+						file.close();
+					}
+					else
+						cout<<"\nPassWord Doesn't Exists.";
+					file.close();
+					break;
+			case 9: container.hashingMenu();
+					break;
+			case 0: cout<<"\n---------------------------------------------------\n";
+					break;
+			default: cout<<"\nInvalid Choice! Try Again!";
+		}
+	}while(choice);
+	container.free();
+	cout<<"\n";
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int main(){
 	Main driver;
 	int choice;
@@ -365,32 +417,8 @@ int main(){
 		cout<<"\nEnter Choice: ";cin>>choice;
 	}
 	cout<<"\n-----------------------END-------------------------\n";
-	
 	return 0;
 }
 
-
-
-
-
-
-//int main(){
-//	Hash container(13);
-//	string str="NearLawiet";
-//	string s1,str1,s2;
-//	s1=container.hashGenerator(str);
-//	container.free();
-//	cout<<"Enter String: ";cin>>str1;
-//	s2=container.hashGenerator(str1);
-//	if(s1==s2)
-//		cout<<"\nAccess Granted";
-//	else
-//		cout<<"\nAccess Denied";
-//	
-//	
-
-//	
-//	return 0;
-//}
 
 
