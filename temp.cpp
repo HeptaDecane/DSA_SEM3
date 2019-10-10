@@ -1,13 +1,16 @@
 #include<bits/stdc++.h>
+#include<cstdio>
+#include<cstdlib>
 using namespace std;
 class Node{
-	int data;
+	char data;
 	Node *link;
 public:
-	Node(int);
+	Node(char);
 	friend class List;
+	friend class Hash;
 };
-Node::Node(int x){
+Node::Node(char x){
 	data=x;
 	link=NULL;
 }
@@ -19,14 +22,14 @@ public:
 	List(){
 		start=NULL;
 	}
-	void pushBack(int);
+	void pushBack(char);
 	void sortList();
-	bool deleteByValue(int);
+	bool deleteByValue(char);
 	void display();
 	int count();
 	friend class Hash;
 };
-void List::pushBack(int _data){
+void List::pushBack(char _data){
 	Node *temp,*t;
 	temp=new Node(_data);
 	if(start==NULL){
@@ -38,7 +41,7 @@ void List::pushBack(int _data){
 		t=t->link;
 	t->link=temp;
 }
-bool List::deleteByValue(int _data){
+bool List::deleteByValue(char _data){
 	Node *t,*prev;
 	if(start==NULL){
 		cout<<"\nRow Empty";
@@ -103,11 +106,15 @@ class Hash{
 public:
 	Hash();
 	Hash(int);
-	void insert(int);
+	void insert(char);
 	void display();
 	void sortHash();
-	bool erase(int);
+	void free();
+	bool erase(char);
+	string hashGenerator(string);
+	string returnHash();
 	int hashFunction(int);
+	string hashChar(char);
 	int count();
 };
 Hash::Hash(){
@@ -121,11 +128,41 @@ Hash::Hash(int r){
 int Hash::hashFunction(int key){
 	return (key%rows);
 }
-void Hash::insert(int key){
+void Hash::free(){
+	for(int i=0;i<rows;i++)
+		table[i].start=NULL;
+}
+string Hash::hashChar(char c){
+	string str;
+	char code[4];
+	int ascii=(int)c;
+	if(c==' ')
+		return "9x";
+	else if(c>='A'&&c<='Z'){
+		code[0]=((ascii)%26)+65;
+		code[1]=((ascii-17)%26)+65;
+		code[2]=((ascii+13)%26)+65;
+	}
+	else if(c>='a'&&c<='z'){
+		code[0]=((ascii)%26)+97;
+		code[1]=((ascii-17)%26)+97;
+		code[2]=((ascii+13)%26)+97;
+	}
+	else{
+		stringstream buffer;
+		buffer<<ascii;
+		buffer>>str;
+		return str;
+	}
+	code[3]='\0';
+	str=code;
+	return str;
+}
+void Hash::insert(char key){
 	int index=hashFunction(key);
 	table[index].pushBack(key);
 }
-bool Hash::erase(int key){
+bool Hash::erase(char key){
 	int index=hashFunction(key);
 	return table[index].deleteByValue(key);
 }
@@ -135,6 +172,39 @@ void Hash::display(){
 		table[i].display();
 		cout<<"\n";
 	}
+}
+string Hash::hashGenerator(string str){
+	for(int i=0;i<str.length();i++)
+		insert(str[i]);
+	return returnHash();	
+}
+string Hash::returnHash(){
+	string str="#";
+	int key;
+	string code;
+	for(int i=0;i<rows;i++){
+		if(table[i].start!=NULL){
+			stringstream buffer0;
+			key=(i+1)^10;
+			buffer0<<key;
+			string substr0;
+			buffer0>>substr0;
+			str=str+substr0;
+			Node *t=table[i].start;
+			for(int j=0;t!=NULL;t=t->link){
+				stringstream buffer1;
+				key=(j+1)^7;
+				buffer1<<key;
+				string substr1;
+				buffer1>>substr1;
+				str=str+substr1;
+				code=hashChar(t->data);
+				str=str+code;
+				j++;
+			}
+		}
+	}
+	return str;
 }
 void Hash::sortHash(){
 	for(int i=0;i<rows;i++)
@@ -147,14 +217,22 @@ int Hash::count(){
 	return total;
 }
 int main(){
-	Hash container(17);
-	for(int i=100;i>=1;i--)
-		container.insert(i);
-	container.display();
-	container.sortHash();cout<<"\n";
-	container.display();
+	Hash container(13);
+	string str="NearLawiet";
+	string s1,str1,s2;
+	s1=container.hashGenerator(str);
+	container.free();
+	cout<<"Enter String: ";cin>>str1;
+	s2=container.hashGenerator(str1);
+	if(s1==s2)
+		cout<<"\nAccess Granted";
+	else
+		cout<<"\nAccess Denied";
+	
+	
+
+	
 	return 0;
 }
-
 
 
