@@ -327,7 +327,7 @@ int Main::hashing(){
 		cout<<"\nEnter Choice [Press 0:exit|9:Options]: ";
 		cin>>choice;
 		switch(choice){
-			case 1: file.open("record.txt",ios::in|ios::out|ios::ate);
+			case 1: file.open("password_hash.txt",ios::in|ios::out|ios::ate);
 					if(!file.tellp()){
 						cout<<"\nEnter PassWord: ";cin>>pass0;
 						hash0=container.hashGenerator(pass0);
@@ -339,11 +339,11 @@ int Main::hashing(){
 					file.close();
 					container.free();
 					break;
-			case 2: file.open("record.txt",ios::in|ios::out|ios::ate);
+			case 2: file.open("password_hash.txt",ios::in|ios::out|ios::ate);
 					if(file.tellp()){
 						string currentPass,currentHash,oldHash;
 						file.close();
-						file.open("record.txt",ios::in);
+						file.open("password_hash.txt",ios::in);
 						file>>oldHash;
 						cout<<"\nEnter Current PassWord: ";cin>>currentPass;
 						currentHash=container.hashGenerator(currentPass);
@@ -352,7 +352,7 @@ int Main::hashing(){
 						if(currentHash==oldHash){
 							cout<<"\nEnter New PassWord: ";cin>>newPass;
 							newHash=container.hashGenerator(newPass);
-							file.open("record.txt",ios::out|ios::trunc);
+							file.open("password_hash.txt",ios::out|ios::trunc);
 							file<<newHash;
 							file.close();
 							cout<<"\nPassWord Changed Successfully!";
@@ -361,15 +361,15 @@ int Main::hashing(){
 							cout<<"\nWrong PassWord! Try Again.";
 					}
 					else
-						cout<<"PassWord Doesn't Exists.";
+						cout<<"\nPassWord Doesn't Exists.";
 					file.close();
 					container.free();
 					break;
-			case 3: file.open("record.txt",ios::in|ios::out|ios::ate);
+			case 3: file.open("password_hash.txt",ios::in|ios::out|ios::ate);
 					if(file.tellp()){
 						file.close();
 						string currentHash;
-						file.open("record.txt",ios::in);
+						file.open("password_hash.txt",ios::in);
 						file>>currentHash;
 						cout<<"\nHashed PassWord: "<<currentHash;
 						file.close();
@@ -391,6 +391,9 @@ int Main::hashing(){
 }
 int main(){
 	Main driver;
+	fstream file;
+	file.open("password_hash.txt",ios::out|ios::app);
+	file.close();
 	int choice;
 	cout<<"\n@ MAIN MENU\n";
 	cout<<"\n-------------------HASH TABLES---------------------";
