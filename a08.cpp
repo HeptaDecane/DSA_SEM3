@@ -133,7 +133,7 @@ Expression Expression::infixToPostfix(){
 			s.push('(');
 		}
 		else if(symbol==')'&&!s.isEmpty()){
-			while(s.peek()!='('){
+			while(s.peek()!='('&&!s.isEmpty()){
 				exp.append(s.peek());
 				s.pop();
 			}
