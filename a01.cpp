@@ -8,238 +8,251 @@
 
 #include<bits/stdc++.h>
 using namespace std;
-int z;
-class student
-{
-	int roll;
+class Student{
+	int rollNo;
 	float marks;
-	char name[50];
-  public:
-	int getroll()
-  {
-    return roll;
-  }
-	float getmarks()
-  {
-	 return marks;
-  }
-	void getdata();
+public:
+	Student();
+	void read();
 	void display();
+	friend class Database;
 };
-void student::getdata()
-{
-  int troll,check[50],f,p;
-  float tmarks;
-  cout<<"-----------------------------------------"<<endl;
-  x:
-  f=1;
-  cout<<"Enter Roll Number: ";
-  cin>>troll;
-  for(p=0;p<z;p++)
-	if(troll==check[p])
-		f=0;
-  if(troll<=0)
-  {
-	  cout<<"!!!!!! Enter Valid Roll No. !!!!!!"<<endl;
-	  goto x;
-  }
-  else if(f==0)
-  {
-	cout<<"!!!!!! Roll No: "<<troll<<" Already Scanned !!!!!!"<<endl;
-	goto x;
-  }
-  else roll=troll;
-  cout<<"Enter Name: ";
-  cin>>name;
-  y:
-  cout<<"Enter Marks(-1 if absent): ";
-  cin>>tmarks;
-  if(tmarks<-1||tmarks>100)
-    {
-  	  cout<<"!!!!!! Enter Valid Marks !!!!!!"<<endl;
-  	  goto y;
-    }
-	 else marks=tmarks;
-  check[z]=roll;
-  z++;
+Student::Student(){
+	rollNo=0;
+	marks=0.0;
 }
-void student::display()
-{
-	cout<<roll<<"\t\t"<<name<<"\t\t";
-	if(marks<0)cout<<"Absent"<<endl;
-	else cout<<marks<<endl;
-}
-class dsclass
-{
-	student s[50];
-	float avg,sum,count;
-	int i,j,n;
-  public:
-  void getdata();
-  void display();
-  void average();
-  void maxmin();
-  void mode();
-  void absent();
-  void menu();
-  void arrange();
-};
-void dsclass::getdata()
-{
-  cout<<endl<<"----------------DATA ENTRY MENU----------------"<<endl;
-  label:
-  cout<<"Enter The No. of Students in the Class: ";
-  cin>>n;
-  if(n<=0)
-  {
-		cout<<"!!!!! Class Cannot be Empty !!!!!"<<endl;
-		goto label;
-  }
-  for(i=0;i<n;i++)
-  s[i].getdata();
-}
-void dsclass::arrange()
-{
-	student temp;
-	for(i=0;i<n;i++)
-	for(j=i+1;j<n;j++)
-	{
-		if(s[i].getroll()>s[j].getroll())
-		{
-			temp=s[i];
-			s[i]=s[j];
-			s[j]=temp;
-		}
+void Student::read(){
+validation1:
+	cout<<"\nRoll No : ";cin>>rollNo;
+	if(rollNo<1){
+		cout<<"\nInvalid Roll No, Try Again!";
+		goto validation1;
+	}
+validation2:
+	cout<<"\nMarks   : ";cin>>marks;
+	if(marks<-1||marks>100){
+		cout<<"\nInvalid Marks, Try Again!";
+		goto validation2;
 	}
 }
-void dsclass::display()
-{
-  cout<<endl<<"Roll No.\tName\t\tMarks"<<endl;
-  cout<<"-----------------------------------------------"<<endl;
-  for(i=0;i<n;i++)
-  s[i].display();
-}
-void dsclass::average()
-{
-  sum=0;count=0;
-  for(i=0;i<n;i++)
-  {
-    if(s[i].getmarks()>=0)
-	 {
-		sum=sum+s[i].getmarks();
-      count++;
-    }
-    avg=sum/count;
-  }
-  cout<<endl<<"Average Score: "<<avg<<endl;
-}
-void dsclass::maxmin()
-{
-  float max=-2,min=100;
-  for(i=0;i<n;i++)
-  {
-	if(s[i].getmarks()>=max&&s[i].getmarks()>=0)
-		max=s[i].getmarks();
-	if(s[i].getmarks()<=min&&s[i].getmarks()>=0)
-		min=s[i].getmarks();
+void Student::display(){
+	if(marks==-1){
+		cout<<"\n "<<rollNo<<"\t\tA";
+		return;
 	}
-  cout<<endl<<"Highest Marks: "<<max<<" | Roll No(s). :";
-  for(i=0;i<n;i++)
-  {
-		if(s[i].getmarks()==max)
-		cout<<s[i].getroll()<<", ";
-  }
-  cout<<endl<<"Lowest Marks: "<<min<<"  | Roll No(s). :";
-  for(i=0;i<n;i++)
-  {
-		if(s[i].getmarks()==min)
-		cout<<s[i].getroll()<<", ";
-  }
-  cout<<endl;
+	cout<<"\n "<<rollNo<<"\t\t"<<marks;
 }
-void dsclass::mode()
-{
-	int f=0,c;
-	float t,m[50],temp;
-	for(i=0;i<n;i++)
-		m[i]=s[i].getmarks();
-	for(i=0;i<n;i++)
-	{
-		for(j=i+1;j<n;j++)
-		{
-			if(m[i]>m[j])
-			{
-				temp=m[i];
-				m[i]=m[j];
-				m[j]=temp;
-			}
-		}
-	}
-	for(i=0;i<n;i++)
-	{
-		c=0;
-		if(m[i]>=0)
-		for(j=0;j<n;j++)
-		{
-			if(m[i]==m[j])
-			{
-				c++;
-			}
-		}
-		if(c>=f)
-		{
-			f=c;
-			t=m[i];
-		}
-	}
-	if(f>1)
-	cout<<endl<<"Most Scored Marks: "<<t<<" | scored "<<f<<" times."<<endl;
-	else cout<<endl<<"No Score Repeated."<<endl;
-}
-void dsclass:: absent()
-{
-	cout<<endl<<"Absent Student(s) are: ___";
-	for(i=0;i<n;i++)
-	{
-		if(s[i].getmarks()<0)
-		{
-			cout<<endl<<"\t\tRoll No. "<<s[i].getroll();
-		}
-	}
-	cout<<endl;
-}
-void dsclass::menu()
-{
-	cout<<"------------------RESULT MANAGEMENT--------------------"<<endl;
-	cout<<"\tPress 1 to Enter Result"<<endl;
-	cout<<"\tPress 2 to display Entire Result"<<endl;
-	cout<<"\tPress 3 for Average score of the class"<<endl;
-	cout<<"\tPress 4 for Highest and Lowest Score"<<endl;
-	cout<<"\tPress 5 for the Marks scored by most the students"<<endl;
-	cout<<"\tPress 6 for the absentee List"<<endl;
-	cout<<"\tPress 0 to exit"<<endl;
 
+class Database{
+	Student *s;
+	int t,p;
+public:
+	Database();
+	Database(int);
+	void allocate(int);
+	void read();
+	void display();
+	int absent();
+	Student maxMarks();
+	Student minMarks();
+	void searchStudent(Student);
+	float average();
+	int mode();
+	void menu();
+	void arrange();
+};
+Database::Database(){
+	s=NULL;
+	t=0;
+	p=0;
 }
-int main()
-{
-	dsclass se1;
-	int ch;
-	se1.menu();
-	label:
-	cout<<endl<<"_______________________________________________";
-	cout<<endl<<"Enter Choice from Menu [Press 0 to exit]: ";
-	cin>>ch;
-	switch(ch)
-	{
-		case 1: z=0;se1.getdata();se1.arrange();goto label;break;
-		case 2: se1.display();goto label;break;
-		case 3: se1.average();goto label;break;
-		case 4: se1.maxmin();goto label;break;
-		case 5: se1.mode();goto label;break;
-		case 6: se1.absent();goto label;break;
-		case 0: cout<<endl<<"Exiting....";break;
-		default:cout<<endl<<"!!!!!!Enter a valid Choice form Menu!!!!!!";
-				  goto label;
+Database::Database(int n){
+	this->t=n;
+	s=new Student[this->t];
+	p=0;
+}
+void Database::allocate(int n){
+	this->t=n;
+	s=new Student[this->t];
+	p=0;
+}
+void Database::arrange(){
+	Student temp;
+	for(int i=0;i<t;i++){
+		for(int j=i+1;j<t;j++){
+			if(s[i].rollNo>s[j].rollNo){
+				temp=s[i];
+				s[i]=s[j];
+				s[j]=temp;
+			}
+		}
 	}
+}
+void Database::read(){
+	for(int i=0;i<t;i++){
+validation3:
+		cout<<"\nStudent "<<i+1;
+		s[i].read();
+		for(int j=0;j<i;j++){
+			if(s[i].rollNo==s[j].rollNo){
+				cout<<"\nStudent Roll No. Repeated, Try Again!";
+				goto validation3;
+			}
+		}
+	}
+	for(int i=0;i<t;i++){
+		if(s[i].marks!=-1)
+			p++;
+	}
+}
+float Database::average(){
+	float avg=0.0;
+	for(int i=0;i<t;i++){
+		if(s[i].marks!=-1)
+			avg+=s[i].marks;
+	}
+	if(p)
+		avg=avg/p;
+	return avg;
+}
+int Database::mode(){
+	Student temp;
+	int count=0,frequency=0;
+	for(int i=0;i<t;i++){
+		for(int j=i+1;j<t;j++){
+			if(s[i].marks>s[j].marks){
+				temp=s[i];
+				s[i]=s[j];
+				s[j]=temp;
+			}
+		}
+	}
+	for(int i=0;i<t;i++){
+		count=0;
+		if(s[i].marks!=-1){
+			for(int j=0;j<t;j++){
+				if(s[i].marks==s[j].marks)
+					count++;
+			}
+		}
+		if(count>=frequency){
+			frequency=count;
+			temp=s[i];
+		}
+	}
+	if(frequency==1)
+		return 0;
+	cout<<"\nMost Scored Marks = "<<temp.marks;
+	return frequency;	
+}
+void Database::display(){
+	cout<<"\nMARKS DATABASE: ";
+	cout<<"\nRoll No.\tMarks";
+	for(int i=0;i<t;i++){
+		s[i].display();
+	}
+}
+Student Database::maxMarks(){
+	Student max;
+	for(int i=0;i<t;i++){
+		if(s[i].marks>max.marks)
+			max=s[i];
+	}
+	return max;
+}
+Student Database::minMarks(){
+	Student min;
+	min.marks=100;
+	for(int i=0;i<t;i++){
+		if(s[i].marks!=-1&&s[i].marks<min.marks)
+			min=s[i];
+	}
+	return min;
+}
+void Database::searchStudent(Student a){
+	for(int i=0;i<t;i++){
+		if(s[i].marks==a.marks)
+			s[i].display();
+	}
+	return;
+}
+int Database::absent(){
+	for(int i=0;i<t;i++)
+		if(s[i].marks==-1)
+			s[i].display();
+	return t-p;
+}
+void Database::menu(){
+	cout<<"\n----------------------DATABASE MENU----------------------";
+	cout<<"\n| Press 1: Re-Enter Test Database                       |";
+	cout<<"\n| Press 2: Display Test Database                        |";
+	cout<<"\n| Press 3: Most Scored Marks                            |";
+	cout<<"\n| Press 4: Average Score of the Test                    |";
+	cout<<"\n| Press 5: Max Score of the Test                        |";
+	cout<<"\n| Press 6: Max Score of the Test                        |";
+	cout<<"\n| Press 7: Absent Students List                         |";
+	cout<<"\n---------------------------------------------------------";
+} 
+int main(){
+	int choice,n,count=0;
+	Student s;
+	cout<<"\n----------------------DATABASE ENTRY---------------------";
+	cout<<"\nEnter No. of Students: ";
+	cin>>n;
+	Database dsa(n);
+	dsa.read();
+	dsa.arrange();
+	cout<<"\nData Entry Successful!";
+	dsa.menu();
+	do{
+		cout<<"\n---------------------------------------------------------";
+		cout<<"\nEnter Choice [0-Exit|9-Menu]: ";
+		cin>>choice;
+		switch(choice){
+			case 0:	cout<<"\n---------------------------END---------------------------";
+					break;
+			case 1:	cout<<"\n----------------------DATABASE ENTRY---------------------";
+					cout<<"\nEnter No. of Students: ";
+					cin>>n;
+					dsa.allocate(n);
+					dsa.read();
+					dsa.arrange();
+					cout<<"\nData Entry Successful!";
+					break;
+			case 2:	dsa.display();
+					break;
+			case 3: count=dsa.mode();
+					if(count)
+						cout<<", Scored by "<<count<<" Students";
+					else
+						cout<<"\nNo Scores Repeated!";
+					dsa.arrange();
+					break;
+			case 4:	cout<<"\nAverage Test Score = "<<dsa.average();
+					break;
+			case 5:	s=dsa.maxMarks();
+					cout<<"\nHighest Score:";
+					cout<<"\nRoll No.\tMarks";
+					dsa.searchStudent(s);
+					break;
+			case 6:	s=dsa.minMarks();
+					cout<<"\nLowest Score:";
+					cout<<"\nRoll No.\tMarks";
+					dsa.searchStudent(s);
+					break;
+			case 7: cout<<"\nAbsent Students:";
+					cout<<"\nRoll No.  --";
+					count=dsa.absent();
+					cout<<"\nAbsent Count = "<<count;
+					break;
+			case 9: dsa.menu();
+					break;
+			default:cout<<"\nInvalid Choice, Try Again!";
+		}
+		
+	}while(choice);
 	return 0;
 }
+	
+	
+	
