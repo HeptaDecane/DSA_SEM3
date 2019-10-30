@@ -235,7 +235,7 @@ int main(){
 					cout<<"\nRoll No.\tMarks";
 					dsa.searchStudent(s);
 					break;
-			case 6:	s=dsa.minMarks();
+			case 6:	s=dsa.minMarks(); 
 					cout<<"\nLowest Score:";
 					cout<<"\nRoll No.\tMarks";
 					dsa.searchStudent(s);
@@ -253,6 +253,3 @@ int main(){
 	}while(choice);
 	return 0;
 }
-	
-	
-	
