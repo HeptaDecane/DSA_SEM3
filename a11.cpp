@@ -63,13 +63,14 @@ int Database::fibonacciSearch(int key){
 	int offset=-1;
 	while(fib0>1){
 		int i=min(offset+fib2,n-1);
-		if(key>array[i]){
+		cout<<"\n"<<i<<" "<<offset;
+		if(key>array[i]){    // move fibonacci numbers down by single term
 			fib0=fib1;
 			fib1=fib2;
 			fib2=fib0-fib1;
 			offset=i;
 		}
-		else if(key<array[i]){
+		else if(key<array[i]){    // move fibonacci numbers down by two terms
 			fib0=fib2;
 			fib1=fib1-fib2;
 			fib2=fib0-fib1;
@@ -136,12 +137,7 @@ int main(){
 		cin>>choice;
 		switch(choice){
 			case 1: cout<<"\nEnter Element: ";
-					index=container.setData();
-					if(index<0)
-						cout<<"\n"<<key<<" is not found in list";
-					else
-						cout<<"\n"<<key<<" found at index: "<<index;
-					break;
+					container.setData();
 			case 2: cout<<"\nEnter Element to Search : ";cin>>key;
 					index=container.linearSearch(key);
 					if(index<0)
@@ -181,11 +177,3 @@ int main(){
 	}while(choice);
 	return 0;
 }
-
-
-
-
-
-
-
-
