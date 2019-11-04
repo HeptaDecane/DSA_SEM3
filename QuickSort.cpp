@@ -39,7 +39,7 @@ int Database::partition(int low,int high){
 	float pivot=array[high];
 	int i=low-1;
 	for(int j=low;j<high;j++){
-		if(array[j]>pivot){
+		if(array[j]<pivot){        // Ascending Order
 			i++;
 			swap(&array[i],&array[j]);
 		}
